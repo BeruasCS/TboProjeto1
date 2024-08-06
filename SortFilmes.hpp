@@ -119,6 +119,26 @@ std::vector<Filme*> merge_sort(const std::vector<Filme*>& array, bool (*compareF
 
         return c;
     }
+    template <typename T>//nao conhecia essa funcionalidade, chatgpt me ensinou, T pode ser de qualquer tipo, mas ja fiz o merge sort sem, enntao nao vou atualizar
+ Filme* buscaBinaria(const std::vector<Filme*>& array, T key, T (Filme::*getter)() const) {
+        int low = 0;
+        int high = array.size() - 1;
+
+        while (low <= high) {
+            int mid = low + (high - low) / 2;
+            T midVal = (array[mid]->*getter)();
+
+            if (midVal < key) {
+                low = mid + 1;
+            } else if (midVal > key) {
+                high = mid - 1;
+            } else {
+                return array[mid];
+            }
+        }
+
+        return nullptr; // Retorna nullptr se não encontrar o filme
+    }
 
 
     void imprimirFilmes() {
