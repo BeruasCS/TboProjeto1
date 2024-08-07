@@ -13,10 +13,10 @@ std::string Nome_do_Cinema;
 int Coordenada_X;
 int Coordenada_Y;
 float Preco_Ingresso;
-std::vector<Filme> Filmes_Em_Exibição;
+std::vector<std::string> Filmes_Em_Exibição;
 
 
-Cinema(std::string Cinema_ID, std::string Nome_do_Cinema, int Coordenada_X, int Coordenada_Y, float Preco_Ingresso, std::vector<Filme> Filmes_Em_Exibição)
+Cinema(std::string Cinema_ID, std::string Nome_do_Cinema, int Coordenada_X, int Coordenada_Y, float Preco_Ingresso, std::vector<std::string> Filmes_Em_Exibição)
     :Cinema_ID(Cinema_ID), Nome_do_Cinema(Nome_do_Cinema), Coordenada_X(Coordenada_X), 
     Coordenada_Y(Coordenada_Y), Preco_Ingresso(Preco_Ingresso), Filmes_Em_Exibição(Filmes_Em_Exibição){}
 
@@ -63,16 +63,10 @@ while (std::getline(file, linha)) {
         std::istringstream Filmes_Em_Exibição_stream(Filmes_Em_Exibição_str);
 
 
-
-
-
-
-
-        //aquyi tenho que buscar o filme no vetor de ponteiros tconst
-       Filme filme;
-        while (std::getline(Filmes_Em_Exibição_stream, filme, ',')) {
-            Filmes_Em_Exibição.push_back(filme);
-        }
+    //    Filme filme;
+    //     while (std::getline(Filmes_Em_Exibição_stream, filme, ',')) {
+    //         Filmes_Em_Exibição.push_back(filme);
+    //     }
 
 
 }           
