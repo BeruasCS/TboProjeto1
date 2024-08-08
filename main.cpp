@@ -1,9 +1,12 @@
-
 #include <iostream>
 #include <vector>
 #include "Filme.hpp"
 #include "SortFilmes.hpp"
 
+// Funções de comparação
+// bool compareByOriginalTitle(Filme* a, Filme* b) {
+//     return a->getOriginalTitle() < b->getOriginalTitle();
+// }
 
 bool compareByTconst(Filme* a, Filme* b) {
     return a->getTconst() < b->getTconst();
@@ -33,7 +36,9 @@ bool compareByStartYear(Filme* a, Filme* b) {
     return a->getStartYear() < b->getStartYear();
 }
 
-
+// bool compareByStartYear(Filme* a, Filme* b) {
+//     return a->getStartYear() < b->getStartYear();
+// }
 bool compareByEndYear(Filme* a, Filme* b) {
     return a->getEndYear() < b->getEndYear();
 }
@@ -45,26 +50,42 @@ bool compareByRuntime(Filme* a, Filme* b) {
 
 
 
+
+
 int main() {
     std::string nomeArquivo = "filmesCrop1.txt";
     std::vector<Filme> filmes = lerArquivoFilmes(nomeArquivo);
 
-    // Criar instância de SortFilmes
     SortFilmes sort(filmes);
-
-    // Atualizar os vetores de ponteiros
     sort.atualizar();
 
-    // Imprimir filmes antes da ordenação
     std::cout << "Antes da ordenação:\n";
     sort.imprimirFilmes();
 
     // Ordenar filmes por título original
-    sort.originalTitleArrayPtr = sort.merge_sort(sort.originalTitleArrayPtr, compareByOriginalTitle);
+    sort.originalTitleArrayPtr = sort.merge_sort(sort.startYearArrayPtr, compareByStartYear);
 
-    // Imprimir filmes após a ordenação
     std::cout << "Após a ordenação por título original:\n";
     sort.imprimirFilmes();
+
+    // // Buscar filmes por gênero
+    // std::string generoParaBuscar = "Action"; // Gênero que você quer buscar
+    // std::vector<Filme*> filmesEncontrados = sort.buscaPorGenero(generoParaBuscar);
+
+    // std::cout << "Filmes encontrados com o gênero '" << generoParaBuscar << "':\n";
+    // if (filmesEncontrados.empty()) {
+    //     std::cout << "Nenhum filme encontrado com o gênero '" << generoParaBuscar << "'.\n";
+    // } else {
+    //     for (auto& filme : filmesEncontrados) {
+    //         std::cout << "ID: " << filme->getTconst() << "\n"
+    //                   << "Título Original: " << filme->getOriginalTitle() << "\n"
+    //                   << "Gêneros: ";
+    //         for (const auto& genero : filme->getGenres()) {
+    //             std::cout << genero << " ";
+    //         }
+    //         std::cout << "\n\n";
+    //     }
+    // }
 
     return 0;
 }
