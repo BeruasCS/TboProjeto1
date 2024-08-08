@@ -94,25 +94,39 @@ public:
     }
 
     template <typename T>
-    Filme* buscaBinaria(const std::vector<Filme*>& array, T key, T (Filme::*getter)() const) {
-        int low = 0;
-        int high = array.size() - 1;
+std::vector<Filme*> buscaBinariaMultiplosResultados(const std::vector<Filme*>& array, T key, T (Filme::*getter)() const) {
+    std::vector<Filme*> resultados;
+    int low = 0;
+    int high = array.size() - 1;
+    int foundIndex = -1;
 
-        while (low <= high) {
-            int mid = low + (high - low) / 2;
-            T midVal = (array[mid]->*getter)();
+    while (low <= high) {
+        int mid = low + (high - low) / 2;
+        T midVal = (array[mid]->*getter)();
 
-            if (midVal < key) {
-                low = mid + 1;
-            } else if (midVal > key) {
-                high = mid - 1;
-            } else {
-                return array[mid];
-            }
+        if (midVal < key) {
+            low = mid + 1;
+        } else if (midVal > key) {
+            high = mid - 1;
+        } else {
+            foundIndex = mid;
+            break;
         }
-
-        return nullptr;
     }
+
+    if (foundIndex != -1) {
+        // Procura para a esquerda
+        for (int i = foundIndex; i >= 0 && (array[i]->*getter)() == key; --i) {
+            resultados.push_back(array[i]);
+        }
+        // Procura para a direita
+        for (int i = foundIndex + 1; i < array.size() && (array[i]->*getter)() == key; ++i) {
+            resultados.push_back(array[i]);
+        }
+    }
+
+    return resultados;
+}
 
     std::vector<Filme*> buscaPorGenero(const std::string& genero) {
         std::vector<Filme*> resultados;
