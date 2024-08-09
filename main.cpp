@@ -52,37 +52,37 @@ int main() {
     sort.startYearArrayPtr = sort.merge_sort(sort.startYearArrayPtr, compareByStartYear);
     std::cout << "sort feito\n";
 
-    // int seleciona = 0;
-    // int seleciona1 = 0;
+    int seleciona = 0;
+    int seleciona1 = 0;
 
-    // std::cout << "\ndigite 1 para buscar\n";
-    // std::cin >> seleciona;
-    // if (seleciona == 1) {
-    //     // Realizar a busca binária para múltiplos resultados
-    //     int anoParaBuscar = 2017; // Coloque o ano que deseja buscar
-    //     std::cout << "\nindo fazer a busca\n";
-    //     std::vector<Filme*> filmesEncontrados = sort.buscaBinariaMultiplosResultados(sort.startYearArrayPtr, anoParaBuscar, &Filme::getStartYear);
-    //     std::cout << "\nbusca feita\n";
+    std::cout << "\ndigite 1 para buscar\n";
+    std::cin >> seleciona;
+    if (seleciona == 1) {
+        // Realizar a busca binária para múltiplos resultados
+        int anoParaBuscar = 2017; // Coloque o ano que deseja buscar
+        std::cout << "\nindo fazer a busca\n";
+        std::vector<Filme*> filmesEncontrados = sort.buscaBinariaMultiplosResultados(sort.startYearArrayPtr, anoParaBuscar, &Filme::getStartYear);
+        std::cout << "\nbusca feita\n";
 
-    //     std::cout << "\ndigite 1 para imprimir a busca\n";
-    //     std::cin >> seleciona1;
+        std::cout << "\ndigite 1 para imprimir a busca\n";
+        std::cin >> seleciona1;
 
-    //     if (seleciona1 == 1) {
-    //         if (filmesEncontrados.empty()) {
-    //             std::cout << "\nimprimindo busca\n";
-    //             std::cout << "Nenhum filme encontrado com o ano de início " << anoParaBuscar << ".\n";
-    //         } else {
-    //             std::cout << "Filmes encontrados com o ano de início " << anoParaBuscar << ":\n";
-    //             for (auto& filme : filmesEncontrados) {
-    //                 std::cout << "ID: " << filme->getTconst() << "\n"
-    //                           << "Título Original: " << filme->getOriginalTitle() << "\n"
-    //                           << "Ano de Início: " << filme->getStartYear() << "\n\n";
-    //             }
-    //         }
-    //     } else {
-    //         return 0;
-    //     }
-    // } 
+        if (seleciona1 == 1) {
+            if (filmesEncontrados.empty()) {
+                std::cout << "\nimprimindo busca\n";
+                std::cout << "Nenhum filme encontrado com o ano de início " << anoParaBuscar << ".\n";
+            } else {
+                std::cout << "Filmes encontrados com o ano de início " << anoParaBuscar << ":\n";
+                for (auto& filme : filmesEncontrados) {
+                    std::cout << "ID: " << filme->getTconst() << "\n"
+                              << "Título Original: " << filme->getOriginalTitle() << "\n"
+                              << "Ano de Início: " << filme->getStartYear() << "\n\n";
+                }
+            }
+        } else {
+            return 0;
+        }
+    } 
 
     // Exemplo de criação e impressão de um Cinema
     std::vector<std::string> filmesEmExibicao = {"tt0012349", "tt0023456", "tt0034567"}; // IDs dos filmes
