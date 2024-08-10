@@ -3,6 +3,7 @@
 #include "Filme.hpp"
 #include "SortFilmes.hpp"
 #include "Cinema.hpp"
+#include "ManipularCinema.hpp"
 
 // Funções de comparação
 // bool compareByOriginalTitle(Filme* a, Filme* b) {
@@ -46,7 +47,20 @@ int main() {
 
     SortFilmes sort(filmes);
     sort.atualizar();
-    
+
+
+
+//lendo o arquivo de cinemas e atualizando os vetores de ponteiros de cinema
+    std::string nomeArquivoCinemas = "cinemas.txt";
+    std::vector<Cinema> Cinemas= lerArquivoCinema(nomeArquivoCinemas);
+
+    ManipularCinema manipular;
+    manipular.atualizarCinema(nomeArquivo);
+
+
+
+    // ManipularCinema cinemas;
+    // manipular;
     
     // // Ordenar filmes por ano de início
     // std::cout << "\nprestes a fazer sort\n" ;

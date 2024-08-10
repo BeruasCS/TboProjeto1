@@ -32,6 +32,7 @@ public:
     int getCoordenadaY() const { return Coordenada_Y; }
     float getPrecoIngresso() const { return Preco_Ingresso; }
     std::vector<std::string> getFilmesEmExibicao() const { return Filmes_Em_Exibição; }
+};
 
     // Função para ler o arquivo de cinemas e retornar um vetor de objetos Cinema
     static std::vector<Cinema> lerArquivoCinema(const std::string& nomeArquivo) {
@@ -95,6 +96,5 @@ public:
         file.close();
         return Cinemas;
     }
-};
 
 #endif
