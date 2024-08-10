@@ -109,13 +109,4 @@ std::vector<Cinema*> merge(const std::vector<Cinema*>& a, const std::vector<Cine
 
 
 
-
-
-
-
-
-
-
-
-
 #endif
