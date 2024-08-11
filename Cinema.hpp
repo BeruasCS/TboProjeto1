@@ -7,10 +7,30 @@
 #include <vector>
 #include <string>
 #include <stdexcept>
+#include <algorithm>
+#include <cctype>
+#include <locale>
 #include "Filme.hpp"
 #include "SortFilmes.hpp"
 
+
+// Function to trim leading and trailing whitespaces
+std::string trim(const std::string& str) {
+    auto start = str.begin();
+    while (start != str.end() && std::isspace(*start)) {
+        start++;
+    }
+
+    auto end = str.end();
+    do {
+        end--;
+    } while (std::distance(start, end) > 0 && std::isspace(*end));
+
+    return std::string(start, end + 1);
+}
+
 class Cinema {
+    
 private:
     std::string Cinema_ID;
     std::string Nome_do_Cinema;
@@ -57,7 +77,14 @@ static std::vector<Cinema> lerArquivoCinema(const std::string& nomeArquivo) {
         std::getline(iss, Coordenada_X_str, ',');
         std::getline(iss, Coordenada_Y_str, ',');
         std::getline(iss, Preco_Ingresso_str, ',');
-        std::getline(iss, Filmes_Em_Exibicao_str);
+        std::getline(iss, Filmes_Em_Exibicao_str, ',');
+
+        Cinema_ID = trim(Cinema_ID);
+        Nome_do_Cinema = trim(Nome_do_Cinema);
+        Coordenada_X_str = trim(Coordenada_X_str);
+        Coordenada_Y_str = trim(Coordenada_Y_str);
+        Preco_Ingresso_str = trim(Preco_Ingresso_str);
+        Filmes_Em_Exibicao_str = trim(Filmes_Em_Exibicao_str);
 
         int Coordenada_X = -11;
         int Coordenada_Y = -11;

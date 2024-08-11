@@ -99,6 +99,16 @@ std::vector<Cinema*> merge(const std::vector<Cinema*>& a, const std::vector<Cine
     return c;
 }
 
+    // Método para encontrar cinemas com preços até um limite
+    std::vector<Cinema*> buscarCinemasPorPreco(float precoMaximo) {
+        std::vector<Cinema*> cinemasComPrecoAteLimite;
+        for (auto& cinema : Preco) {
+            if (cinema->getPrecoIngresso() <= precoMaximo) {
+                cinemasComPrecoAteLimite.push_back(cinema);
+            }
+        }
+        return cinemasComPrecoAteLimite;
+    }
 
 
 
