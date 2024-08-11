@@ -48,7 +48,7 @@ public:
             genresArrayPtr.push_back(&filme);
         }
 
-        std::cout << "\nEntrou na função atualizar";
+        // std::cout << "\nEntrou na função atualizar";
     }
 
     std::vector<Filme*> merge_sort(std::vector<Filme*> array, bool (*compareFilme)(Filme*, Filme*)) {

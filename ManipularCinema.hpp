@@ -50,10 +50,11 @@ class ManipularCinema{
             Id.push_back(&cinema);
           for (const auto& filme : cinema.getFilmesEmExibicao()) {
         std::vector<Filme*> filmesEncontrados = sort.buscaBinariaMultiplosResultados(sort.tconstArrayPtr, filme, &Filme::getTconst);
+        setFilmesEmCartaz(filmesEncontrados);
     }      
         }
 
-        std::cout << "\nEntrou na função atualizarCinema";
+        // std::cout << "\nEntrou na função atualizarCinema";
     }
 
     std::vector<Cinema*> merge_sort(std::vector<Cinema*> array, bool (*compareCinema)(Cinema*, Cinema*)) {
