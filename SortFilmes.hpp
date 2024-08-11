@@ -128,15 +128,18 @@ std::vector<Filme*> buscaBinariaMultiplosResultados(const std::vector<Filme*>& a
     return resultados;
 }
 
-    std::vector<Filme*> buscaPorGenero(const std::string& genero) {
-        std::vector<Filme*> resultados;
-        for (auto& filme : genresArrayPtr) {
-            if (std::find(filme->getGenres().begin(), filme->getGenres().end(), genero) != filme->getGenres().end()) {
-                resultados.push_back(filme);
-            }
+std::vector<Filme*> buscarPorGeneroBinario(const std::string& genero) {
+    std::vector<Filme*> resultados;
+
+    for (auto& filme : genresArrayPtr) {
+        const auto& genres = filme->getGenres();
+        if (std::find(genres.begin(), genres.end(), genero) != genres.end()) {
+            resultados.push_back(filme);
         }
-        return resultados;
     }
+
+    return resultados;
+}
 
     void imprimirFilmes() {
         for (auto& filme : originalTitleArrayPtr) {

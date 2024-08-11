@@ -40,62 +40,38 @@ bool compareByPreco(Cinema* a, Cinema* b) {
 
 
 // Função para buscar cinemas por tipos de filmes
-std::vector<const Cinema*> buscarCinemasPorTitleType(ManipularCinema& manipular, SortFilmes& sort, const std::vector<std::string>& tipos) {
+std::vector<const Cinema*> buscarCinemasPorTitleType(ManipularCinema& manipular, SortFilmes& sort, std::string tipo) {
 
-    
-    // Ordenar os filmes por titleType
-    sort.titleTypeArrayPtr = sort.merge_sort(sort.titleTypeArrayPtr, compareByTitleType);
 
     std::vector<const Cinema*> cinemasComTipos;
 
-    for (const auto& tipo : tipos) {
-        // Realizar a busca binária para encontrar os filmes com o titleType especificado
         std::vector<Filme*> filmesEncontrados = sort.buscaBinariaMultiplosResultados(sort.titleTypeArrayPtr, tipo, &Filme::getTitleType);
-        
-        /* Debugging: Imprimir quantidade de filmes encontrados
-        std::cout << "Filmes encontrados para tipo " << tipo << ": " << filmesEncontrados.size() << "\n";
-        for (const auto& filme : filmesEncontrados) {
-            std::cout << "  Filme encontrado: " << filme->getTconst() << "\n";
-         }*/ 
-
+    
     for (const auto& cine : manipular.cinemas) {
          auto filmesEmExibicao = cine.getFilmesEmExibicao();
-            /*filmes em exibicao e um vector do tipo string
           
-          std::cout << "Total de filmes em exibição no cinema " << cine.getNomeDoCinema() << ": " << filmesEmExibicao.size() << std::endl; */ 
-
-                
-            /*for (const auto& filmeExibido : filmesEmExibicao) {
-                // std::cout << " entrou nesse for aqui";
-                // std::cout << " ";
-                // std::cout << "tconst:" << filmeExibido<< "\n"; // Imprimir todos os tconst
-            
-
-            }*/
-
                 // Verificando filme exibido
                     for (const auto& filme : filmesEncontrados) {
                         for(const auto& filmeExibido : filmesEmExibicao){
 
                             if (filme->getTconst() == filmeExibido) {
-                        //   std::cout << "banana";
-                        //     std::cout << "Cinema " << cine.getNomeDoCinema() << " contém o filme com tconst " << filme->getTconst() << "\n";
                             cinemasComTipos.push_back(&cine);
+                            break;
                            
-                        }
+                    }
 
 
-                    }
+                 }
+                      
                      
-                     
-                    }
+            }
 
         }
-    }
+    
 
-    //Remover duplicatas, se necessário
-    std::sort(cinemasComTipos.begin(), cinemasComTipos.end());
-    cinemasComTipos.erase(std::unique(cinemasComTipos.begin(), cinemasComTipos.end()), cinemasComTipos.end());
+    // //Remover duplicatas, se necessário
+    // std::sort(cinemasComTipos.begin(), cinemasComTipos.end());
+    // cinemasComTipos.erase(std::unique(cinemasComTipos.begin(), cinemasComTipos.end()), cinemasComTipos.end());
 
     // Debugging: Imprimir a quantidade final de cinemas encontrados
     std::cout << "Total de cinemas encontrados: " << cinemasComTipos.size() << "\n";
@@ -104,6 +80,46 @@ std::vector<const Cinema*> buscarCinemasPorTitleType(ManipularCinema& manipular,
 }
 
 
+// Função para buscar cinemas por tipos de filmes
+std::vector<const Cinema*> buscarCinemasPorGenero(ManipularCinema& manipular, SortFilmes& sort, std::string genero) {
+
+
+    std::vector<const Cinema*> cinemasComGenero;
+
+        std::vector<Filme*> filmesEncontrados = sort.buscarPorGeneroBinario(genero);
+    
+    for (const auto& cine : manipular.cinemas) {
+         auto filmesEmExibicao = cine.getFilmesEmExibicao();
+          
+                // Verificando filme exibido
+                    for (const auto& filme : filmesEncontrados) {
+                        for(const auto& filmeExibido : filmesEmExibicao){
+
+                            if (filme->getTconst() == filmeExibido) {//tenho que mexer nessa comparacao.
+                                std::cout<<"entrou";
+                            cinemasComGenero.push_back(&cine);
+                            break;
+                           
+                    }
+
+
+                 }
+                      
+                     
+            }
+
+        }
+    
+
+    // //Remover duplicatas, se necessário
+    // std::sort(cinemasComTipos.begin(), cinemasComTipos.end());
+    // cinemasComTipos.erase(std::unique(cinemasComTipos.begin(), cinemasComTipos.end()), cinemasComTipos.end());
+
+    // Debugging: Imprimir a quantidade final de cinemas encontrados
+    std::cout << "Total de cinemas encontrados: " << cinemasComGenero.size() << "\n";
+
+    return cinemasComGenero;
+}
 
 
 
@@ -129,11 +145,50 @@ int main() {
     manipular.atualizarCinema(nomeArquivoFilmes);
 
    // Definir tipos de filmes a serem pesquisados
-    std::vector<std::string> tipos = {"tvEpisode"};
+    std::string tipo = "tvEpisode";
 
-    //Chamar a função de busca
-    std::vector<const Cinema*> cinemasEncontrados = buscarCinemasPorTitleType(manipular, sort, tipos);
 
+
+        // Ordenar os filmes por titleType
+//     sort.titleTypeArrayPtr = sort.merge_sort(sort.titleTypeArrayPtr, compareByTitleType);
+
+//     int buscasimounao=0;
+//     std::cout<<"digite 1 para buscar";
+//     std::cin>>buscasimounao;
+//     if(buscasimounao==1){
+//  std::vector<const Cinema*> cinemasEncontrados = buscarCinemasPorTitleType(manipular, sort, tipo);
+
+//     }
+ sort.titleTypeArrayPtr = sort.merge_sort(sort.genresArrayPtr, compareByGenres);
+
+    std::string genero ="Short";
+        int buscasimounao=0;
+    std::cout<<"digite 1 para buscar";
+    std::cin>>buscasimounao;
+        std::vector<Filme*> resultados;
+
+    if(buscasimounao==1){
+std::vector<const Cinema*> cinemasEncontrados = buscarCinemasPorGenero(manipular, sort, genero);
+// std::vector<Filme*> resultados = sort.buscarPorGeneroBinario(genero);
+
+//     // Print the results
+//     std::cout << "Filmes com o gênero " << genero << ":" << std::endl;
+//     for (auto& filme : resultados) {
+//         std::cout << "ID: " << filme->getTconst() << std::endl;
+//         std::cout << "Título Original: " << filme->getOriginalTitle() << std::endl;
+//         std::cout << "Gêneros: ";
+//         for (const auto& g : filme->getGenres()) {
+//             std::cout << g << " ";
+//         }
+//         std::cout << std::endl;
+//         std::cout << "Ano de Início: " << filme->getStartYear() << std::endl;
+//         std::cout << std::endl;
+//     }
+
+
+    }
+   
+   
     //     manipular.merge_sort(manipular.Preco, compareByPreco);
     //  std::vector<Cinema*> cinemasComPrecoAteLimite= manipular.buscarCinemasPorPreco(12.50);
 
