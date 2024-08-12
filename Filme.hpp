@@ -20,11 +20,15 @@ public:
     int endYear;
     int runtimeMinutes;
     std::vector<std::string> genres;
+ Filme() 
+        : tconst(""), titleType(""), primaryTitle(""), originalTitle(""), isAdult(false), 
+          startYear(-1), endYear(-1), runtimeMinutes(-1), genres() {}
 
     Filme(std::string tconst, std::string titleType, std::string primaryTitle, std::string originalTitle, bool isAdult,
           int startYear, int endYear, int runtimeMinutes, std::vector<std::string> genres)
         : tconst(tconst), titleType(titleType), primaryTitle(primaryTitle), originalTitle(originalTitle), isAdult(isAdult),
           startYear(startYear), endYear(endYear), runtimeMinutes(runtimeMinutes), genres(genres) {}
+
 
            // Getters
     std::string getTconst() const { return tconst; }

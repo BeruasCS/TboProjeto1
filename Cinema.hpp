@@ -1,6 +1,5 @@
 #ifndef CINEMA_HPP
 #define CINEMA_HPP
-
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -13,7 +12,11 @@
 #include "Filme.hpp"
 #include "SortFilmes.hpp"
 
+struct FilmesEmCartaz {
+    std::string cinema_ID;
+    Filme filmedocinema;
 
+};
 // Function to trim leading and trailing whitespaces
 std::string trim(const std::string& str) {
     auto start = str.begin();
@@ -55,7 +58,7 @@ public:
 };
 
 // Função para ler o arquivo de cinemas e retornar um vetor de objetos Cinema
-static std::vector<Cinema> lerArquivoCinema(const std::string& nomeArquivo) {
+static std::vector<Cinema> lerArquivoCinema(const std::string& nomeArquivo, std::vector<FilmesEmCartaz> filmesParaPesquisa) {
     std::vector<Cinema> Cinemas;
     std::ifstream file(nomeArquivo);
 
@@ -78,6 +81,8 @@ static std::vector<Cinema> lerArquivoCinema(const std::string& nomeArquivo) {
         std::getline(iss, Coordenada_Y_str, ',');
         std::getline(iss, Preco_Ingresso_str, ',');
         std::getline(iss, Filmes_Em_Exibicao_str, ',');
+        
+
 
         Cinema_ID = trim(Cinema_ID);
         Nome_do_Cinema = trim(Nome_do_Cinema);
@@ -111,13 +116,20 @@ static std::vector<Cinema> lerArquivoCinema(const std::string& nomeArquivo) {
         std::vector<std::string> Filmes;
         std::istringstream FilmesStream(Filmes_Em_Exibicao_str);
         std::string filmelido;
+        FilmesEmCartaz F;
+
 
         while (std::getline(FilmesStream, filmelido, ',')) {
             Filmes.push_back(filmelido);
+            F.filmedocinema.tconst=filmelido;
+            filmesParaPesquisa.push_back(F);
+            
             // std::cout << "Filme adicionado: " << filmelido << std::endl; // Depuração
         }
 
         Cinema cinema(Cinema_ID, Nome_do_Cinema, Coordenada_X, Coordenada_Y, Preco_Ingresso, Filmes);
+    
+
         Cinemas.push_back(cinema);
     }
 

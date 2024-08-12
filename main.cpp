@@ -122,11 +122,26 @@ std::vector<const Cinema*> buscarCinemasPorGenero(ManipularCinema& manipular, So
 }
 
 
+std::vector<Filme*> buscarPorAno(SortFilmes& sort, int anoInicio, int anoFim) {
+    std::vector<Filme*> filmesComAno;
+    for (const auto& filme : sort.startYearArrayPtr) {
+        int ano = filme->getStartYear();
+        if (ano >= anoInicio && ano <= anoFim) {
+            filmesComAno.push_back(filme);
+        }
+    }
+    return filmesComAno;
+}
 
 
 
 
 int main() {
+
+
+
+
+
     // Nome dos arquivos
     std::string nomeArquivoFilmes = "filmesCrop1.txt";
     std::string nomeArquivoCinemas = "cinemas.txt";
@@ -135,6 +150,14 @@ int main() {
     std::vector<Filme> filmes = lerArquivoFilmes(nomeArquivoFilmes);
     SortFilmes sort(filmes);
     sort.atualizar();
+
+
+     // Ordenar os vetores de ponteiros na main
+    sort.titleTypeArrayPtr = sort.merge_sort(sort.titleTypeArrayPtr, compareByTitleType);
+    sort.genresArrayPtr = sort.merge_sort(sort.genresArrayPtr, compareByGenres);
+    sort.runtimeMinutesArrayPtr = sort.merge_sort(sort.runtimeMinutesArrayPtr, compareByRuntimeMinutes);
+    sort.startYearArrayPtr = sort.merge_sort(sort.startYearArrayPtr, compareByStartYear);
+
 
     // Ler e processar os cinemas
     std::vector<Cinema> cinemas = lerArquivoCinema(nomeArquivoCinemas);
@@ -149,59 +172,37 @@ int main() {
 
 
 
-        // Ordenar os filmes por titleType
-//     sort.titleTypeArrayPtr = sort.merge_sort(sort.titleTypeArrayPtr, compareByTitleType);
+       // Ordenar os filmes por titleType
+    sort.titleTypeArrayPtr = sort.merge_sort(sort.titleTypeArrayPtr, compareByTitleType);
 
-//     int buscasimounao=0;
-//     std::cout<<"digite 1 para buscar";
-//     std::cin>>buscasimounao;
-//     if(buscasimounao==1){
-//  std::vector<const Cinema*> cinemasEncontrados = buscarCinemasPorTitleType(manipular, sort, tipo);
-
-//     }
- sort.titleTypeArrayPtr = sort.merge_sort(sort.genresArrayPtr, compareByGenres);
-
-    std::string genero ="Short";
-        int buscasimounao=0;
+    int buscasimounao=0;
     std::cout<<"digite 1 para buscar";
     std::cin>>buscasimounao;
-        std::vector<Filme*> resultados;
-
     if(buscasimounao==1){
-std::vector<const Cinema*> cinemasEncontrados = buscarCinemasPorGenero(manipular, sort, genero);
-// std::vector<Filme*> resultados = sort.buscarPorGeneroBinario(genero);
-
-//     // Print the results
-//     std::cout << "Filmes com o gênero " << genero << ":" << std::endl;
-//     for (auto& filme : resultados) {
-//         std::cout << "ID: " << filme->getTconst() << std::endl;
-//         std::cout << "Título Original: " << filme->getOriginalTitle() << std::endl;
-//         std::cout << "Gêneros: ";
-//         for (const auto& g : filme->getGenres()) {
-//             std::cout << g << " ";
-//         }
-//         std::cout << std::endl;
-//         std::cout << "Ano de Início: " << filme->getStartYear() << std::endl;
-//         std::cout << std::endl;
-//     }
-
+ std::vector<const Cinema*> cinemasEncontrados = buscarCinemasPorTitleType(manipular, sort, tipo);
 
     }
-   
-   
-    //     manipular.merge_sort(manipular.Preco, compareByPreco);
-    //  std::vector<Cinema*> cinemasComPrecoAteLimite= manipular.buscarCinemasPorPreco(12.50);
-
-    //  for(const auto& cines : cinemas ){
-    //     std::cout << cines.getCinemaID() << std::endl;
-    //     std::cout << cines.getCoordenadaX() << std::endl;
-    //     std::cout << cines.getCoordenadaY() << std::endl;
-    //     std::cout << cines.getNomeDoCinema() << std::endl;
-    //     std::cout << cines.getPrecoIngresso() << std::endl;
 
 
-    //  //}
+    int anoInicio = 2017;
+    int anoFim = 2018;
 
-    //  }
+    std::vector<Filme*> resultadosPorAno = buscarPorAno(sort, anoInicio, anoFim);
+
+    
+    // Imprimir os resultados finais
+    std::cout << "Filmes encontrados: " << resultadosPorAno.size() << "\n";
+    for (const auto& filme : resultadosPorAno) {
+        std::cout << "ID: " << filme->getEndYear()<< ", Título: " << filme->getPrimaryTitle() << "\n";
+    }
+
+
+
+
+
+
+
+
+
     return 0;
 }
