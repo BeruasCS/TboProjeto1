@@ -1,11 +1,2 @@
 inema_ID, Nome_do_Cinema, Coordenada_X, Coordenada_Y, Preço_Ingresso, Filmes_Em_Exibição
 cc00001, Cineplex Estrela, 347865, 478921, 12.50, tt8000001, tt8000023, tt7917518
-cc00002, CineArt Palace, 123456, 789012, 10.00, tt8000034, tt8000078
-cc00003, Grand CineRoyal, 982134, 567890, 11.75, tt8000102, tt8000156, tt8000223
-cc00004, MegaFlix Cinemas, 654321, 123456, 13.00, tt8000345, tt7917518, tt8000589, tt8000654
-cc00005, StarView Cinema, 234567, 876543, 9.50, tt8000789, tt8000876
-cc00006, Golden Gate Theater, 789012, 345678, 14.25, tt8000901, tt8000987, tt8000999
-cc00007, Cinemax Plaza, 567890, 432109, 11.00, tt8001001, tt8001023, tt8001056
-cc00008, Royal Oak Cinemas, 109876, 765432, 12.75, tt8001102, tt7917526, tt8001223
-cc00009, Galaxy Multiplex, 876543, 210987, 13.50, tt8001345, tt8001456, tt8001589
-cc00010, SilverScreen Cinema, 321098, 987654, 11.25, tt8001876
