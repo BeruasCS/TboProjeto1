@@ -58,6 +58,58 @@ public:
     std::vector<std::string> getFilmesEmExibicao() const { return Filmes_Em_Exibicao; }
 };
 
+// Função para realizar o merge de dois subvetores
+void merge(std::vector<FilmesEmCartaz>& vec, int left, int mid, int right) {
+    int n1 = mid - left + 1;
+    int n2 = right - mid;
+
+    std::vector<FilmesEmCartaz> L(n1);
+    std::vector<FilmesEmCartaz> R(n2);
+
+    for (int i = 0; i < n1; i++) {
+        L[i] = vec[left + i];
+    }
+    for (int j = 0; j < n2; j++) {
+        R[j] = vec[mid + 1 + j];
+    }
+
+    int i = 0, j = 0, k = left;
+    while (i < n1 && j < n2) {
+        if (L[i].filmedocinema.tconst <= R[j].filmedocinema.tconst) {
+            vec[k] = L[i];
+            i++;
+        } else {
+            vec[k] = R[j];
+            j++;
+        }
+        k++;
+    }
+
+    while (i < n1) {
+        vec[k] = L[i];
+        i++;
+        k++;
+    }
+
+    while (j < n2) {
+        vec[k] = R[j];
+        j++;
+        k++;
+    }
+}
+
+// Função para realizar o merge sort
+void mergeSort(std::vector<FilmesEmCartaz>& vec, int left, int right) {
+    if (left < right) {
+        int mid = left + (right - left) / 2;
+
+        mergeSort(vec, left, mid);
+        mergeSort(vec, mid + 1, right);
+        merge(vec, left, mid, right);
+    }
+}
+
+
 // Função para ler o arquivo de cinemas e retornar um vetor de objetos Cinema
 static std::vector<Cinema> lerArquivoCinema(const std::string& nomeArquivo, std::vector<FilmesEmCartaz>& filmesParaPesquisa) {
     std::vector<Cinema> Cinemas;
@@ -118,7 +170,7 @@ static std::vector<Cinema> lerArquivoCinema(const std::string& nomeArquivo, std:
         // Os filmes estão todos na mesma string que sobrou
         while (std::getline(iss, filmelido, ',')) {
             Filmes.push_back(trim(filmelido));
-                std::cout<<filmelido<<"|";
+                // std::cout<<filmelido<<"|";
             // Adiciona filme ao vetor filmesParaPesquisa
             FilmesEmCartaz filmeEmCartaz;
             filmeEmCartaz.filmedocinema.tconst = trim(filmelido);
@@ -131,6 +183,9 @@ static std::vector<Cinema> lerArquivoCinema(const std::string& nomeArquivo, std:
     }
 
     file.close();
+
+        // Ordena o vetor filmesParaPesquisa usando merge sort
+    mergeSort(filmesParaPesquisa, 0, filmesParaPesquisa.size() - 1);
     return Cinemas;
 }
 

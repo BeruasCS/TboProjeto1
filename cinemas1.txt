@@ -1,2 +1,0 @@
-inema_ID, Nome_do_Cinema, Coordenada_X, Coordenada_Y, Preço_Ingresso, Filmes_Em_Exibição
-cc00001, Cineplex Estrela, 347865, 478921, 12.50, tt8000001, tt8000023, tt7917518

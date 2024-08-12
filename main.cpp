@@ -48,13 +48,17 @@ std::vector<std::string> buscarCinemasPorTitleType(ManipularCinema& manipular, S
 
     // Verifica os filmes encontrados e relaciona com os cinemas
     for (const auto& filme : filmesEncontrados) {
-        for (const auto& filmeEmCartaz : filmesParaPesquisa) {
+        for (const auto& filmesNapesquisa : filmesParaPesquisa) {
+
+
+            // std::cout<< filme->getTconst()<<"\n";
+            // std::cout<< filmesNapesquisa.filmedocinema.tconst<<"\n";
               
-            if (filme->getTconst() == filmeEmCartaz.filmedocinema.tconst ) {
+            if (filme->getTconst() == filmesNapesquisa.filmedocinema.tconst ) {
 
-                    std::cout<<"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+                  
 
-                cinemasComTipos.push_back(filmeEmCartaz.cinema_ID_Struct);
+                cinemasComTipos.push_back(filmesNapesquisa.cinema_ID_Struct);
             }
         }
     }
@@ -151,23 +155,23 @@ int main() {
     // Atualizar a lista de filmes em cartaz no ManipularCinema
     manipular.atualizarCinema(nomeArquivoFilmes);
 
-    // Definir tipos de filmes a serem pesquisados
-    std::string tipo = "tvEpisode";
+    // // Definir tipos de filmes a serem pesquisados
+    // std::string tipo = "tvEpisode";
 
-    int buscasimounao = 0;
-    std::cout << "Digite 1 para buscar: ";
-    std::cin >> buscasimounao;
+    // int buscasimounao = 0;
+    // std::cout << "Digite 1 para buscar: ";
+    // std::cin >> buscasimounao;
 
-    if (buscasimounao == 1) {
-        // Chamada da função buscarCinemasPorTitleType
-        std::vector<std::string> cinemasEncontrados = buscarCinemasPorTitleType(manipular, sort, tipo, filmesParaPesquisa);
+    // if (buscasimounao == 1) {
+    //     // Chamada da função buscarCinemasPorTitleType
+    //     std::vector<std::string> cinemasEncontrados = buscarCinemasPorTitleType(manipular, sort, tipo, filmesParaPesquisa);
 
-        // Imprimir os cinemas encontrados
-        //std::cout << "Cinemas que exibem filmes do tipo '" << tipo << "':\n";
+    //     // Imprimir os cinemas encontrados
+    //     //std::cout << "Cinemas que exibem filmes do tipo '" << tipo << "':\n";
   
-            std::cout << "banana"<<cinemasEncontrados.size();
+    //         std::cout << "banana"<<cinemasEncontrados.size();
         
-    }
+    // }
 
     // int anoInicio = 2017;
     // int anoFim = 2018;
@@ -179,11 +183,11 @@ int main() {
     //     std::cout << "ID: " << filme->getEndYear() << ", Título: " << filme->getPrimaryTitle() << "\n";
     // }
 
-    // std::cout << "Conteúdo de filmesParaPesquisa: " << filmesParaPesquisa.size() << "\n";
-    // for (const FilmesEmCartaz& filmeEmCartaz : filmesParaPesquisa) {
-    //     std::cout << "Cinema ID: " << filmeEmCartaz.cinema_ID_Struct << std::endl;
-    //     std::cout << "Filme tconst: " << filmeEmCartaz.filmedocinema.tconst << std::endl;
-    // }
+    std::cout << "Conteúdo de filmesParaPesquisa: " << filmesParaPesquisa.size() << "\n";
+    for (const FilmesEmCartaz& filmeEmCartaz : filmesParaPesquisa) {
+      
+        std::cout << "Filme tconst: " << filmeEmCartaz.filmedocinema.tconst << std::endl;
+     }
 
     return 0;
 }
