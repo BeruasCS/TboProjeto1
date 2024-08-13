@@ -1,6 +1,4 @@
 tconst	titleType	primaryTitle	originalTitle	isAdult	startYear	endYear	runtimeMinutes	genres
-tt7917518	short	The Battle II	The Battle II	0	2008	\N	\N	Action,Short
 tt7917520	tvEpisode	Miguel jura amor eterno a Nevis, pero la vida les pondrá pruebas muy duras	Miguel jura amor eterno a Nevis, pero la vida les pondrá pruebas muy duras	0	2017	\N	\N	Drama
-tt7917522	tvEpisode	El amor de Miguel y Nevis es más fuerte que quienes desean separarlos	El amor de Miguel y Nevis es más fuerte que quienes desean separarlos	0	2017	\N	\N	Drama
-tt7917526	short	The Pretentious French Film	The Pretentious French Film	0	2017	0	3	Short
-tt7917528	tvEpisode	Una noticia inesperada podría cambiar los planes de Miguel y Nevis	Una noticia inesperada podría cambiar los planes de Miguel y Nevis	0	2017	\N	\N	Dr
+tt7917518	short	The Battle II	The Battle II	0	2008	2010	55	Action,Short
+tt7917522	tvEpisode	El amor de Miguel y Nevis es más fuerte que quienes desean separarlos	El amor de Miguel y Nevis es más fuerte que quienes desean separarlos	2013	2017	2020	\N	Drama

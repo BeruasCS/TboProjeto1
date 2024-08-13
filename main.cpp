@@ -165,6 +165,8 @@ int main() {
     SortFilmes sortFilmes(filmes);
     sortFilmes.atualizar(); // Ordena os vetores de ponteiros
     sortFilmes.merge_sort(sortFilmes.titleTypeArrayPtr, compareByTitleType);
+    sortFilmes.merge_sort(sortFilmes.runtimeMinutesArrayPtr, compareByRuntimeMinutes);
+
         std::cout<< "tamanho do vetor de ptr titleType"<< sortFilmes.titleTypeArrayPtr.size();
 
 
@@ -210,42 +212,54 @@ int main() {
                     // buscaResultados = sortFilmes.buscaBinariaMultiplosResultados(
                     //     sortFilmes.genresArrayPtr, genero, &Filme::getGenres);
                     break;
-                }
-                case 3: {
-                    int minDuracao, maxDuracao;
-                    std::cout << "Digite a duração mínima em minutos: ";
-                    std::cin >> minDuracao;
-                    std::cout << "Digite a duração maxima em minutos: ";
-                    std::cin >> maxDuracao;
-                    buscaResultados = sortFilmes.buscaLinearMultiplosResultados(
-                        sortFilmes.runtimeMinutesArrayPtr, minDuracao, &Filme::getRuntimeMinutes);
-                    // Filtrar por intervalo
-                    buscaResultados.erase(
-                        std::remove_if(buscaResultados.begin(), buscaResultados.end(),
-                                       [minDuracao, maxDuracao](Filme* f) {
-                                           int duracao = f->getRuntimeMinutes();
-                                           return duracao < minDuracao || duracao > maxDuracao;
-                                       }),
-                        buscaResultados.end());
-                    break;
-                }
-                case 4: {
-                    int anoInicio, anoFim;
-                    std::cout << "Digite o ano de início e o ano de fim: ";
-                    std::cin >> anoInicio >> anoFim;
-                    buscaResultados = sortFilmes.buscaLinearMultiplosResultados(
-                        sortFilmes.startYearArrayPtr, anoInicio, &Filme::getStartYear);
-                    // Filtrar por intervalo
-                    buscaResultados.erase(
-                        std::remove_if(buscaResultados.begin(), buscaResultados.end(),
-                                       [anoInicio, anoFim](Filme* f) {
-                                           int ano = f->getStartYear();
-                                           return ano < anoInicio || ano > anoFim;
-                                       }),
-                        buscaResultados.end());
-                    break;
-                }
-                default:
+                }case 3: {
+                        int minDuracao, maxDuracao;
+                        std::cout << "Digite a duração mínima em minutos: ";
+                        std::cin >> minDuracao;
+                        std::cout << "Digite a duração máxima em minutos: ";
+                        std::cin >> maxDuracao;
+
+                        std::vector<Filme*> Duracao = sortFilmes.runtimeMinutesArrayPtr;
+                        
+
+                        // Percorrer o vetor Duracao
+                        for (auto& film : Duracao) {
+                            // Verifica se o runtimeMinutes do filme está dentro do intervalo
+                            if (film->getRuntimeMinutes() >= minDuracao && film->getRuntimeMinutes() <= maxDuracao) {
+                                buscaResultados.push_back(film);
+                            }
+                        }
+
+                        // Agora, buscaResultados contém todos os filmes dentro do intervalo de duração
+                        break;
+                    }case 4: {
+                        int anoInicio, anoFim;
+                        std::cout << "Digite o ano de início: ";
+                        std::cin >> anoInicio; 
+                        std::cout << "Digite o ano de fim: ";
+                        std::cin >> anoFim;
+
+                        std::vector<Filme*> startYearArrayPtr = sortFilmes.startYearArrayPtr;
+
+                        for (const auto filme : startYearArrayPtr) {
+                            // Verifica se o filme tem um startYear e endYear válidos
+                            bool temStartYearValido = filme->getStartYear() != -11 && filme->getStartYear() != 0;
+                            bool temEndYearValido = filme->getEndYear() != -11 && filme->getEndYear() != 0;
+
+                            // Verifica se o filme está completamente dentro do intervalo de anos
+                            bool dentroDoIntervalo = (temStartYearValido && filme->getStartYear() <= anoFim) &&
+                                                        (temEndYearValido && filme->getEndYear() >= anoInicio);
+
+                            // Inclui o filme se estiver completamente dentro do intervalo
+                            if (dentroDoIntervalo) {
+                                buscaResultados.push_back(filme);
+                            }
+                        }
+
+                        // Agora, buscaResultados contém todos os filmes dentro do intervalo de anos
+                        break;
+                    }
+                    default:
                     std::cout << "Opção inválida\n";
                     continue;
             }

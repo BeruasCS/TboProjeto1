@@ -107,6 +107,7 @@ std::vector<Filme> lerArquivoFilmes(const std::string& nomeArquivo) {
 
        
         Filme filme(tconst, titleType, primaryTitle, originalTitle, isAdult, startYear, endYear, runtimeMinutes, genres, vetor_idcinemas);
+        std::cout<<"AAAAAAAAQUIIII "<<runtimeMinutes;
         filmes.push_back(filme);
 
       }
