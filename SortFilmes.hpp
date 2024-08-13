@@ -93,47 +93,12 @@ public:
         return c;
     }
 
-    template <typename T>
-std::vector<Filme*> buscaBinariaMultiplosResultados(const std::vector<Filme*>& array, T key, T (Filme::*getter)() const) {
-    std::vector<Filme*> resultados;
-    int low = 0;
-    int high = array.size() - 1;
-    int foundIndex = -1;
-
-    while (low <= high) {
-        int mid = low + (high - low) / 2;
-        T midVal = (array[mid]->*getter)();
-
-        if (midVal < key) {
-            low = mid + 1;
-        } else if (midVal > key) {
-            high = mid - 1;
-        } else {
-            foundIndex = mid;
-            break;
-        }
-    }
-
-    if (foundIndex != -1) {
-        // Procura para a esquerda
-        for (int i = foundIndex; i >= 0 && (array[i]->*getter)() == key; --i) {
-            resultados.push_back(array[i]);
-        }
-        // Procura para a direita
-        for (int i = foundIndex + 1; i < array.size() && (array[i]->*getter)() == key; ++i) {
-            resultados.push_back(array[i]);
-        }
-    }
-
-    return resultados;
-}
-
-std::vector<Filme*> buscarPorGeneroBinario(const std::string& genero) {
+template <typename T>
+std::vector<Filme*> buscaLinearMultiplosResultados(const std::vector<Filme*>& array, T key, T (Filme::*getter)() const) {
     std::vector<Filme*> resultados;
 
-    for (auto& filme : genresArrayPtr) {
-        const auto& genres = filme->getGenres();
-        if (std::find(genres.begin(), genres.end(), genero) != genres.end()) {
+    for (auto& filme : array) {
+        if ((filme->*getter)() == key) {
             resultados.push_back(filme);
         }
     }
@@ -141,18 +106,27 @@ std::vector<Filme*> buscarPorGeneroBinario(const std::string& genero) {
     return resultados;
 }
 
-    void imprimirFilmes() {
-        for (auto& filme : originalTitleArrayPtr) {
-            std::cout << "ID: " << filme->getTconst() << "\n"
-            //           << "Título Original: " << filme->getOriginalTitle() << "\n"
-            //           << "Gêneros: ";
-            // for (const auto& genero : filme->getGenres()) {
-            //     std::cout << genero << " "
-                ;
-            // }
-            // std::cout << "\n\n";
+Filme* buscaBinariaPorTconst(std::vector<Filme>& filmes, const std::string& tconst) {
+    int low = 0;
+    int high = filmes.size() - 1;
+
+    while (low <= high) {
+        int mid = low + (high - low) / 2;
+
+        if (filmes[mid].getTconst() < tconst) {
+            low = mid + 1;
+        } else if (filmes[mid].getTconst() > tconst) {
+            high = mid - 1;
+        } else {
+            return &filmes[mid]; // Retorna o endereço do filme encontrado
         }
     }
+
+    return nullptr; // Retorna nullptr se não encontrar o tconst
+}
+
+
+   
 };
 
 #endif

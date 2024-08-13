@@ -18,6 +18,10 @@ struct FilmesEmCartaz {
     Filme filmedocinema;
 };
 
+bool compareByTconst(Filme* a, Filme* b) {
+    return a->getTconst() < b->getTconst();
+}
+
 // Função para remover espaços em branco no início e no fim da string
 std::string trim(const std::string& str) {
     auto start = str.begin();
@@ -109,11 +113,11 @@ void mergeSort(std::vector<FilmesEmCartaz>& vec, int left, int right) {
     }
 }
 
-
 // Função para ler o arquivo de cinemas e retornar um vetor de objetos Cinema
-static std::vector<Cinema> lerArquivoCinema(const std::string& nomeArquivo, std::vector<FilmesEmCartaz>& filmesParaPesquisa) {
+static std::vector<Cinema> lerArquivoCinema(const std::string& nomeArquivo, std::vector<FilmesEmCartaz>& filmesParaPesquisa, std::vector<Filme> filmes) {
     std::vector<Cinema> Cinemas;
     std::ifstream file(nomeArquivo);
+    SortFilmes sort(filmes);
 
     if (!file.is_open()) {
         std::cerr << "Erro ao abrir o arquivo " << nomeArquivo << std::endl;
@@ -166,11 +170,22 @@ static std::vector<Cinema> lerArquivoCinema(const std::string& nomeArquivo, std:
         // Agora vamos pegar todos os filmes restantes
         std::vector<std::string> Filmes;
         std::string filmelido;
+        int contadorFilmes = 0;  // Contador para o número de filmes lidos
 
         // Os filmes estão todos na mesma string que sobrou
         while (std::getline(iss, filmelido, ',')) {
-            Filmes.push_back(trim(filmelido));
-                // std::cout<<filmelido<<"|";
+            Filme* filmeptr = sort.buscaBinariaPorTconst(filmes, trim(filmelido));
+
+            if (filmeptr) {
+                filmeptr->vetor_idcinemas.push_back(Cinema_ID);
+                contadorFilmes++;
+              // Incrementa o contador de filmes lidos
+
+                // Verifica e imprime a quantidade de cinemas associados ao filme
+         
+               // std::cout << "Número de cinemas associados a este filme: " << filmeptr->vetor_idcinemas.size() << std::endl;
+            }
+
             // Adiciona filme ao vetor filmesParaPesquisa
             FilmesEmCartaz filmeEmCartaz;
             filmeEmCartaz.filmedocinema.tconst = trim(filmelido);
@@ -178,13 +193,16 @@ static std::vector<Cinema> lerArquivoCinema(const std::string& nomeArquivo, std:
             filmesParaPesquisa.push_back(filmeEmCartaz);
         }
 
+        // Imprime o número total de filmes lidos para o cinema
+        std::cout << "Número total de filmes lidos para o cinema " << Cinema_ID << ": " << contadorFilmes << std::endl;
+
         Cinema cinema(Cinema_ID, Nome_do_Cinema, Coordenada_X, Coordenada_Y, Preco_Ingresso, Filmes);
         Cinemas.push_back(cinema);
     }
 
     file.close();
 
-        // Ordena o vetor filmesParaPesquisa usando merge sort
+    // Ordena o vetor filmesParaPesquisa usando merge sort
     mergeSort(filmesParaPesquisa, 0, filmesParaPesquisa.size() - 1);
     return Cinemas;
 }

@@ -49,7 +49,7 @@ class ManipularCinema{
             Preco.push_back(&cinema);
             Id.push_back(&cinema);
           for (const auto& filme : cinema.getFilmesEmExibicao()) {
-        std::vector<Filme*> filmesEncontrados = sort.buscaBinariaMultiplosResultados(sort.tconstArrayPtr, filme, &Filme::getTconst);
+        std::vector<Filme*> filmesEncontrados = sort.buscaLinearMultiplosResultados(sort.tconstArrayPtr, filme, &Filme::getTconst);
         setFilmesEmCartaz(filmesEncontrados);
     }      
         }

@@ -20,14 +20,15 @@ public:
     int endYear;
     int runtimeMinutes;
     std::vector<std::string> genres;
+    std:: vector <std::string> vetor_idcinemas;
  Filme() 
         : tconst(""), titleType(""), primaryTitle(""), originalTitle(""), isAdult(false), 
-          startYear(-1), endYear(-1), runtimeMinutes(-1), genres() {}
+          startYear(-1), endYear(-1), runtimeMinutes(-1), genres(), vetor_idcinemas() {}
+Filme(std::string tconst, std::string titleType, std::string primaryTitle, std::string originalTitle, bool isAdult,
+      int startYear, int endYear, int runtimeMinutes, std::vector<std::string> genres, std::vector<std::string> vetor_idcinemas)
+    : tconst(tconst), titleType(titleType), primaryTitle(primaryTitle), originalTitle(originalTitle), isAdult(isAdult),
+      startYear(startYear), endYear(endYear), runtimeMinutes(runtimeMinutes), genres(genres), vetor_idcinemas(vetor_idcinemas) {}
 
-    Filme(std::string tconst, std::string titleType, std::string primaryTitle, std::string originalTitle, bool isAdult,
-          int startYear, int endYear, int runtimeMinutes, std::vector<std::string> genres)
-        : tconst(tconst), titleType(titleType), primaryTitle(primaryTitle), originalTitle(originalTitle), isAdult(isAdult),
-          startYear(startYear), endYear(endYear), runtimeMinutes(runtimeMinutes), genres(genres) {}
 
 
            // Getters
@@ -40,6 +41,9 @@ public:
     int getEndYear() const { return endYear; }
     int getRuntimeMinutes() const { return runtimeMinutes; }
     std::vector<std::string> getGenres() const { return genres; }
+    std::vector<std::string> getvetor_ID() const { return vetor_idcinemas; }
+
+
 
 
 };
@@ -61,6 +65,8 @@ std::vector<Filme> lerArquivoFilmes(const std::string& nomeArquivo) {
    while (std::getline(file, linha)) {
         std::istringstream iss(linha);
         std::string tconst, titleType, primaryTitle, originalTitle, isAdultStr, startYearStr, endYearStr, runtimeMinutesStr, genresStr;
+        std:: vector <std::string> vetor_idcinemas;
+
 
         std::getline(iss, tconst, '\t');
         std::getline(iss, titleType, '\t');
@@ -99,8 +105,10 @@ std::vector<Filme> lerArquivoFilmes(const std::string& nomeArquivo) {
             genres.push_back(genre);
         }
 
-        Filme filme(tconst, titleType, primaryTitle, originalTitle, isAdult, startYear, endYear, runtimeMinutes, genres);
+       
+        Filme filme(tconst, titleType, primaryTitle, originalTitle, isAdult, startYear, endYear, runtimeMinutes, genres, vetor_idcinemas);
         filmes.push_back(filme);
+
       }
 
     file.close();
