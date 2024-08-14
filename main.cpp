@@ -164,7 +164,7 @@ std::vector<Filme*> vetorFilmesPtrAtualizar(std::vector<Filme>& filmes){
     return essesFilmes;
 }
 
-int buscaBinariaFilmes(const std::vector<Filme*>& filmes, const std::string& tconst) {
+int binarySearchTconst(const std::vector<Filme*>& filmes, const std::string& tconst) {
     int esquerda = 0;
     int direita = filmes.size() - 1;
 
@@ -188,7 +188,7 @@ int buscaBinariaFilmes(const std::vector<Filme*>& filmes, const std::string& tco
         }
     }
     
-    return -1;  // Retorna -1 se o tconst não for encontrado
+    return -576; 
 }
 int main() {
  
@@ -329,8 +329,6 @@ int main() {
                 std::cin >> maisBuscas;
 
                 if (maisBuscas == 1) {
-
-                std::cout << "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA "<< "\n";
                     continuar = false;
                     break;
                 }
@@ -376,6 +374,7 @@ int main() {
                         std::cout << "Nenhum filme encontrado para o gênero " << genero << "\n";
                     }
                     }
+                    break;
                     case 3: {
                int minDuracao, maxDuracao;
                         std::cout << "Digite a duração mínima em minutos: ";
@@ -397,8 +396,8 @@ int main() {
                         // Agora, buscaResultados contém todos os filmes dentro do intervalo de duração
                         break;
                     }
-                    case 4: {
-                           std::vector<Filme*> startYearArrayPtr = sortFilmes.startYearArrayPtr;
+                    case 4:{
+                        std::vector<Filme*> startYearArrayPtr = sortFilmes.startYearArrayPtr;
                          int anoInicio;
                         std::cout << "Digite o ano de início: ";
                         std::cin >> anoInicio;   
@@ -415,7 +414,7 @@ int main() {
 
                             // Inclui o filme se estiver completamente dentro do intervalo
                             if (dentroDoIntervalo) {
-                                resultadosTemp.push_back(filme);
+                                buscaResultados.push_back(filme);
                             }
                         }
                         
@@ -431,17 +430,19 @@ int main() {
              // Aqui você junta os resultados usando push_back
     if (logica == 0) { // "E"
 
+    std::vector<Filme *> solucao;
 
-    auto solucao = buscaResultados;
   for(int j = 0; j<resultadosTemp.size();j++){
-    int indice = buscaBinariaFilmes(buscaResultados,resultadosTemp[j]->getTconst());
-    if(indice != -1){
+
+    int indice = binarySearchTconst(buscaResultados,resultadosTemp[j]->tconst);
+    if(indice != -576){
         solucao.push_back(resultadosTemp[j]);
+        
     }
   }
 
-
-
+buscaResultados.clear();
+buscaResultados=solucao;
 
     } else if (logica == 1) { // "OU"
 

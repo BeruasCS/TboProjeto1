@@ -178,7 +178,7 @@ static std::vector<Cinema> lerArquivoCinema(const std::string& nomeArquivo, std:
 
             if (filmeptr) {
                 filmeptr->vetor_idcinemas.push_back(Cinema_ID);
-                std::cout<<Cinema_ID;
+                //std::<<Cinema_ID;
               // Incrementa o contador de filmes lidos
 
                 // Verifica e imprime a quantidade de cinemas associados ao filme
@@ -194,7 +194,7 @@ static std::vector<Cinema> lerArquivoCinema(const std::string& nomeArquivo, std:
         }
 
         // Imprime o número total de filmes lidos para o cinema
-        std::cout << "Número total de filmes lidos para o cinema " << Cinema_ID << ": " << contadorFilmes << std::endl;
+        //std::cout << "Número total de filmes lidos para o cinema " << Cinema_ID << ": " << contadorFilmes << std::endl;
 
         Cinema cinema(Cinema_ID, Nome_do_Cinema, Coordenada_X, Coordenada_Y, Preco_Ingresso, Filmes);
         Cinemas.push_back(cinema);
