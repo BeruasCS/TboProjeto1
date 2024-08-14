@@ -9,7 +9,8 @@
 #include <stdexcept>
 
 // Classe Filme permanece inalterada
-class Filme {
+class Filme
+{
 public:
     std::string tconst;
     std::string titleType;
@@ -45,46 +46,77 @@ public:
 };
 
 // Função para mapear cada gênero ao índice correspondente na matriz de vetores
-int getGenreIndex(const std::string& genre) {
-    if (genre == "Action") return 0;
-    if (genre == "Adult") return 1;
-    if (genre == "Adventure") return 2;
-    if (genre == "Animation") return 3;
-    if (genre == "Biography") return 4;
-    if (genre == "Comedy") return 5;
-    if (genre == "Crime") return 6;
-    if (genre == "Documentary") return 7;
-    if (genre == "Drama") return 8;
-    if (genre == "Family") return 9;
-    if (genre == "Fantasy") return 10;
-    if (genre == "Game-Show") return 11;
-    if (genre == "History") return 12;
-    if (genre == "Horror") return 13;
-    if (genre == "Music") return 14;
-    if (genre == "Musical") return 15;
-    if (genre == "Mystery") return 16;
-    if (genre == "NULL") return 17;
-    if (genre == "News") return 18;
-    if (genre == "Reality-TV") return 19;
-    if (genre == "Romance") return 20;
-    if (genre == "Sci-Fi") return 21;
-    if (genre == "Short") return 22;
-    if (genre == "Sport") return 23;
-    if (genre == "Talk-Show") return 24;
-    if (genre == "Thriller") return 25;
-    if (genre == "War") return 26;
-    if (genre == "Western") return 27;
+int getGenreIndex(const std::string &genre)
+{
+    if (genre == "Action")
+        return 0;
+    if (genre == "Adult")
+        return 1;
+    if (genre == "Adventure")
+        return 2;
+    if (genre == "Animation")
+        return 3;
+    if (genre == "Biography")
+        return 4;
+    if (genre == "Comedy")
+        return 5;
+    if (genre == "Crime")
+        return 6;
+    if (genre == "Documentary")
+        return 7;
+    if (genre == "Drama")
+        return 8;
+    if (genre == "Family")
+        return 9;
+    if (genre == "Fantasy")
+        return 10;
+    if (genre == "Game-Show")
+        return 11;
+    if (genre == "History")
+        return 12;
+    if (genre == "Horror")
+        return 13;
+    if (genre == "Music")
+        return 14;
+    if (genre == "Musical")
+        return 15;
+    if (genre == "Mystery")
+        return 16;
+    if (genre == "NULL")
+        return 17;
+    if (genre == "News")
+        return 18;
+    if (genre == "Reality-TV")
+        return 19;
+    if (genre == "Romance")
+        return 20;
+    if (genre == "Sci-Fi")
+        return 21;
+    if (genre == "Short")
+        return 22;
+    if (genre == "Sport")
+        return 23;
+    if (genre == "Talk-Show")
+        return 24;
+    if (genre == "Thriller")
+        return 25;
+    if (genre == "War")
+        return 26;
+    if (genre == "Western")
+        return 27;
 
     return -1; // Retorna -1 se o gênero não for encontrado
 }
 
 // Função para ler o arquivo de filmes, preencher a matriz de vetores por gênero e retornar o vetor de todos os filmes
-std::vector<Filme> lerArquivoFilmes(const std::string& nomeArquivo, std::vector<std::vector<Filme>>& filmesPorGenero) {
-    std::vector<Filme> filmes; // Vetor para armazenar todos os filmes
+std::vector<Filme> lerArquivoFilmes(const std::string &nomeArquivo, std::vector<std::vector<Filme>> &filmesPorGenero)
+{
+    std::vector<Filme> filmes;  // Vetor para armazenar todos os filmes
     filmesPorGenero.resize(28); // Redimensiona a matriz com 28 vetores
 
     std::ifstream file(nomeArquivo);
-    if (!file.is_open()) {
+    if (!file.is_open())
+    {
         std::cerr << "Erro ao abrir o arquivo " << nomeArquivo << std::endl;
         return filmes;
     }
@@ -93,7 +125,8 @@ std::vector<Filme> lerArquivoFilmes(const std::string& nomeArquivo, std::vector<
     // Ignora a primeira linha (cabeçalho)
     std::getline(file, linha);
 
-    while (std::getline(file, linha)) {
+    while (std::getline(file, linha))
+    {
         std::istringstream iss(linha);
         std::string tconst, titleType, primaryTitle, originalTitle, isAdultStr, startYearStr, endYearStr, runtimeMinutesStr, genresStr;
         std::vector<std::string> vetor_idcinemas;
@@ -111,28 +144,38 @@ std::vector<Filme> lerArquivoFilmes(const std::string& nomeArquivo, std::vector<
         bool isAdult = isAdultStr == "1";
         int startYear = 0, endYear = 0, runtimeMinutes = 0;
 
-        try {
+        try
+        {
             startYear = startYearStr != "\\N" ? std::stoi(startYearStr) : -11;
-        } catch (const std::invalid_argument& e) {
+        }
+        catch (const std::invalid_argument &e)
+        {
             startYear = -11;
         }
 
-        try {
+        try
+        {
             endYear = endYearStr != "\\N" ? std::stoi(endYearStr) : -11;
-        } catch (const std::invalid_argument& e) {
+        }
+        catch (const std::invalid_argument &e)
+        {
             endYear = -11;
         }
 
-        try {
+        try
+        {
             runtimeMinutes = runtimeMinutesStr != "\\N" ? std::stoi(runtimeMinutesStr) : -11;
-        } catch (const std::invalid_argument& e) {
+        }
+        catch (const std::invalid_argument &e)
+        {
             runtimeMinutes = -11;
         }
 
         std::vector<std::string> genres;
         std::istringstream genresStream(genresStr);
         std::string genre;
-        while (std::getline(genresStream, genre, ',')) {
+        while (std::getline(genresStream, genre, ','))
+        {
             genres.push_back(genre);
         }
 
@@ -142,9 +185,11 @@ std::vector<Filme> lerArquivoFilmes(const std::string& nomeArquivo, std::vector<
         filmes.push_back(filme);
 
         // Adiciona o filme a cada vetor correspondente ao gênero
-        for (const std::string& g : genres) {
+        for (const std::string &g : genres)
+        {
             int genreIndex = getGenreIndex(g);
-            if (genreIndex != -1) {
+            if (genreIndex != -1)
+            {
                 filmesPorGenero[genreIndex].push_back(filme);
             }
         }
