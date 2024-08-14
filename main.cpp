@@ -210,7 +210,7 @@ int main()
     std::string nomeArquivoFilmes = "filmesCrop.txt";
     std::vector<std::vector<Filme>> filmesPorGenero;
     std::vector<Filme> filmes = lerArquivoFilmes(nomeArquivoFilmes, filmesPorGenero);
-    std::set<Filme *> resultadosSet;
+
 
     SortFilmes sortFilmes(filmes);
     sortFilmes.atualizar(); // Ordena os vetores de ponteiros
