@@ -165,26 +165,26 @@ std::vector<Filme*> vetorFilmesPtrAtualizar(std::vector<Filme>& filmes){
 }
 
 int binarySearchTconst(const std::vector<Filme*>& filmes, const std::string& tconst) {
-    int esquerda = 0;
-    int direita = filmes.size() - 1;
+    int high = 0;
+    int low = filmes.size() - 1;
 
-    while (esquerda <= direita) {
-        int meio = esquerda + (direita - esquerda) / 2;
+    while (high <= low) {
+        int meio = high + (low - high) / 2;
         
         // Obtemos o tconst do filme no meio
         std::string tconstMeio = filmes[meio]->getTconst();
         
         // Verifica se o tconst no meio é o procurado
         if (tconstMeio == tconst) {
-            return meio;  // Retorna o índice do filme encontrado
+            return meio;
         }
-        // Se o tconst procurado for menor, busca na metade esquerda
+        // caso tconst procurado for menor buscamos pela metade high
         else if (tconst < tconstMeio) {
-            direita = meio - 1;
+            low = meio - 1;
         }
-        // Se o tconst procurado for maior, busca na metade direita
+        // caso tconst procurado for maior se busca pela metade direita
         else {
-            esquerda = meio + 1;
+            high = meio + 1;
         }
     }
     
@@ -430,19 +430,20 @@ int main() {
              // Aqui você junta os resultados usando push_back
     if (logica == 0) { // "E"
 
-    std::vector<Filme *> solucao;
+    std::vector<Filme *> result;
 
   for(int j = 0; j<resultadosTemp.size();j++){
 
     int indice = binarySearchTconst(buscaResultados,resultadosTemp[j]->tconst);
     if(indice != -576){
-        solucao.push_back(resultadosTemp[j]);
+        //se estiver no vetor, entra nessa concicao, e assim colocamos no vetor de solucao
+        result.push_back(resultadosTemp[j]);
         
     }
   }
 
 buscaResultados.clear();
-buscaResultados=solucao;
+buscaResultados=result;
 
     } else if (logica == 1) { // "OU"
 
