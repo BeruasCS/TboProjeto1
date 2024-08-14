@@ -18,6 +18,7 @@ public:
     std::vector<Filme*> endYearArrayPtr;
     std::vector<Filme*> runtimeMinutesArrayPtr;
     std::vector<Filme*> genresArrayPtr;
+   // std::vector<Filme*> filmesDesseGenero;
     std::vector<Filme> filmes;
 
     SortFilmes(std::vector<Filme>& filmes)

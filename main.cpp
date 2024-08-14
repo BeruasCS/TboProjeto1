@@ -42,24 +42,6 @@ bool compareByPreco(Cinema* a, Cinema* b) {
 void removeCharacter(std::string &str, char charToRemove) { 
     str.erase(remove(str.begin(), str.end(), charToRemove), str.end());
 }
- Filme* buscaBinariaDuplicatas(const std::vector<Filme*>& filmes, const std::string& tconst) {
-    int low = 0;
-    int high = filmes.size() - 1;
-
-    while (low <= high) {
-        int mid = low + (high - low) / 2;
-
-        if (filmes[mid]->getTconst() < tconst) {
-            low = mid + 1;
-        } else if (filmes[mid]->getTconst() > tconst) {
-            high = mid - 1;
-        } else {
-            return filmes[mid]; // Retorna o ponteiro do filme encontrado
-        }
-    }
-
-    return nullptr; // Retorna nullptr se não encontrar o tconst
-}
 
 
 // // Função para buscar cinemas por tipos de filmes
@@ -173,7 +155,41 @@ void exibirMenuLogica() {
     std::cout << "\"E\" - 0\n";
     std::cout << "\"ou\" - 1\n";
 }
+std::vector<Filme*> vetorFilmesPtrAtualizar(std::vector<Filme>& filmes){
+           std::vector<Filme*> essesFilmes;
+           essesFilmes.clear();
+        for(auto filme: filmes){
+                essesFilmes.push_back(&filme);
+        }
+    return essesFilmes;
+}
 
+int buscaBinariaFilmes(const std::vector<Filme*>& filmes, const std::string& tconst) {
+    int esquerda = 0;
+    int direita = filmes.size() - 1;
+
+    while (esquerda <= direita) {
+        int meio = esquerda + (direita - esquerda) / 2;
+        
+        // Obtemos o tconst do filme no meio
+        std::string tconstMeio = filmes[meio]->getTconst();
+        
+        // Verifica se o tconst no meio é o procurado
+        if (tconstMeio == tconst) {
+            return meio;  // Retorna o índice do filme encontrado
+        }
+        // Se o tconst procurado for menor, busca na metade esquerda
+        else if (tconst < tconstMeio) {
+            direita = meio - 1;
+        }
+        // Se o tconst procurado for maior, busca na metade direita
+        else {
+            esquerda = meio + 1;
+        }
+    }
+    
+    return -1;  // Retorna -1 se o tconst não for encontrado
+}
 int main() {
  
 
@@ -233,12 +249,13 @@ int main() {
                     std::string genero;
                     std::cout << "Digite o gênero de filme: ";
                     std::cin >> genero;
+                  
 
                     int genreIndex = getGenreIndex(genero);
                     if (genreIndex != -1 && !filmesPorGenero[genreIndex].empty()) {
-                        for (const auto& filme : filmesPorGenero[genreIndex]) {
-                            std::cout << "Filme: " << filme.getPrimaryTitle() 
-                                      << " | Gênero: " << genero << "\n";
+                        for (auto& filme : filmesPorGenero[genreIndex]) {
+                                buscaResultados.push_back(&filme);
+
                         }
                     } else {
                         std::cout << "Nenhum filme encontrado para o gênero " << genero << "\n";
@@ -329,62 +346,82 @@ int main() {
                 std::vector<Filme*> resultadosTemp;
                 switch (novaBusca) {
                     case 1: {
-                        std::string tipo;
-                        std::cout << "Digite o(s) tipo(s) de filme(s): ";
-                        std::cin >> tipo;
-                        resultadosTemp = sortFilmes.buscaLinearMultiplosResultados(
-                            sortFilmes.titleTypeArrayPtr, tipo, &Filme::getTitleType);
-                        break;
+                    std::string tipo;
+                    std::cout << "Digite o(s) tipo(s) de filme(s): ";
+                    std::cin >> tipo;
+                    resultadosTemp = sortFilmes.buscaLinearMultiplosResultados(
+                     sortFilmes.titleTypeArrayPtr, tipo, &Filme::getTitleType);
+                    resultadosTemp.size();
+                    for(const auto x : resultadosTemp){
+                    x->getTitleType();
+
+                        }
+
+
+                    break;
                     }
                     case 2: {
                         std::string genero;
-                        std::cout << "Digite o(s) gênero(s) de filme(s): ";
-                        std::cin >> genero;
-                        // resultadosTemp = sortFilmes.buscaBinariaMultiplosResultados(
-                        //     sortFilmes.genresArrayPtr, genero, &Filme::getGenres);
-                        break;
+                    std::cout << "Digite o gênero de filme: ";
+                    std::cin >> genero;
+                  
+
+                    int genreIndex = getGenreIndex(genero);
+                    if (genreIndex != -1 && !filmesPorGenero[genreIndex].empty()) {
+                        for (auto& filme : filmesPorGenero[genreIndex]) {
+                                resultadosTemp.push_back(&filme);
+
+                        }
+                    } else {
+                        std::cout << "Nenhum filme encontrado para o gênero " << genero << "\n";
+                    }
                     }
                     case 3: {
-                        int minDuracao, maxDuracao;
-                        std::cout << "Digite a duração mínima e máxima em minutos: ";
-                        std::cin >> minDuracao >> maxDuracao;
-                        resultadosTemp = sortFilmes.buscaLinearMultiplosResultados(
-                            sortFilmes.runtimeMinutesArrayPtr, minDuracao, &Filme::getRuntimeMinutes);
-                        // Filtrar por intervalo
-                        resultadosTemp.erase(
-                            std::remove_if(resultadosTemp.begin(), resultadosTemp.end(),
-                                           [minDuracao, maxDuracao](Filme* f) {
-                                               int duracao = f->getRuntimeMinutes();
-                                               return duracao < minDuracao || duracao > maxDuracao;
-                                           }),
-                            resultadosTemp.end());
+               int minDuracao, maxDuracao;
+                        std::cout << "Digite a duração mínima em minutos: ";
+                        std::cin >> minDuracao;
+                        std::cout << "Digite a duração máxima em minutos: ";
+                        std::cin >> maxDuracao;
+
+                        std::vector<Filme*> Duracao = sortFilmes.runtimeMinutesArrayPtr;
+                        
+
+                        // Percorrer o vetor Duracao
+                        for (auto& film : Duracao) {
+                            // Verifica se o runtimeMinutes do filme está dentro do intervalo
+                            if (film->getRuntimeMinutes() >= minDuracao && film->getRuntimeMinutes() <= maxDuracao) {
+                                resultadosTemp.push_back(film);
+                            }
+                        }
+
+                        // Agora, buscaResultados contém todos os filmes dentro do intervalo de duração
                         break;
                     }
                     case 4: {
-                            std::vector<Filme*> startYearArrayPtr = sortFilmes.startYearArrayPtr;
-                            int anoInicio;
-                            std::cout << "Digite o ano de início: ";
-                            std::cin >> anoInicio;   
-                
+                           std::vector<Filme*> startYearArrayPtr = sortFilmes.startYearArrayPtr;
+                         int anoInicio;
+                        std::cout << "Digite o ano de início: ";
+                        std::cin >> anoInicio;   
+               
+                      
+
+                            for (const auto filme : startYearArrayPtr) {
+                            // Verifica se o filme tem um startYear e endYear válidos
+                            bool temStartYearValido = filme->getStartYear() != -11 && filme->getStartYear() != 0;
+                         
+
+                            // Verifica se o filme está completamente dentro do intervalo de anos
+                            bool dentroDoIntervalo = (temStartYearValido && filme->getStartYear()>= anoInicio);
+
+                            // Inclui o filme se estiver completamente dentro do intervalo
+                            if (dentroDoIntervalo) {
+                                resultadosTemp.push_back(filme);
+                            }
+                        }
                         
 
-                                for (const auto filme : startYearArrayPtr) {
-                                // Verifica se o filme tem um startYear e endYear válidos
-                                bool temStartYearValido = filme->getStartYear() != -11 && filme->getStartYear() != 0;
-                            
-
-                                // Verifica se o filme está completamente dentro do intervalo de anos
-                                bool dentroDoIntervalo = (temStartYearValido && filme->getStartYear()>= anoInicio);
-
-                                // Inclui o filme se estiver completamente dentro do intervalo
-                                if (dentroDoIntervalo) {
-                                    buscaResultados.push_back(filme);
-                                }
-                            }
-                            
-
-                            // Agora, buscaResultados contém todos os filmes dentro do intervalo de anos
-                            break;
+                        // Agora, buscaResultados contém todos os filmes dentro do intervalo de anos
+                        break;
                     }
                     default:
                         std::cout << "Opção inválida\n";
@@ -393,24 +430,29 @@ int main() {
 
              // Aqui você junta os resultados usando push_back
     if (logica == 0) { // "E"
-        // Fazer a interseção dos vetores se for necessário
-        std::vector<Filme*> intersecaoResultados;
-        for (auto& filme : buscaResultados) {
-            if (std::find(resultadosTemp.begin(), resultadosTemp.end(), filme) != resultadosTemp.end()) {
-                intersecaoResultados.push_back(filme);
-            }
-        }
-        buscaResultados = intersecaoResultados;
+
+
+    auto solucao = buscaResultados;
+  for(int j = 0; j<resultadosTemp.size();j++){
+    int indice = buscaBinariaFilmes(buscaResultados,resultadosTemp[j]->getTconst());
+    if(indice != -1){
+        solucao.push_back(resultadosTemp[j]);
+    }
+  }
+
+
+
+
     } else if (logica == 1) { // "OU"
 
        
 
         for (auto& filme : resultadosTemp) {
-           if(buscaBinariaDuplicatas(buscaResultados, filme->tconst)==0){
+       
 
                 buscaResultados.push_back(filme);
                  //resultadosSet.insert(*&filme);
-            }
+            
            
         }
     }
