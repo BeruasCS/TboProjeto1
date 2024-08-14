@@ -42,6 +42,25 @@ bool compareByPreco(Cinema* a, Cinema* b) {
 void removeCharacter(std::string &str, char charToRemove) { 
     str.erase(remove(str.begin(), str.end(), charToRemove), str.end());
 }
+ Filme* buscaBinariaDuplicatas(const std::vector<Filme*>& filmes, const std::string& tconst) {
+    int low = 0;
+    int high = filmes.size() - 1;
+
+    while (low <= high) {
+        int mid = low + (high - low) / 2;
+
+        if (filmes[mid]->getTconst() < tconst) {
+            low = mid + 1;
+        } else if (filmes[mid]->getTconst() > tconst) {
+            high = mid - 1;
+        } else {
+            return filmes[mid]; // Retorna o ponteiro do filme encontrado
+        }
+    }
+
+    return nullptr; // Retorna nullptr se não encontrar o tconst
+}
+
 
 // // Função para buscar cinemas por tipos de filmes
 // std::vector<Filme> buscarCinemasPorTitleType(ManipularCinema& manipular, SortFilmes& sort, std::string tipo, std::vector<FilmesEmCartaz>& filmesParaPesquisa) {
@@ -159,8 +178,13 @@ int main() {
  
 
     std::cout << "Inicializando programa...\n";
-   std::string nomeArquivoFilmes = "filmesCrop1.txt";
-    std::vector<Filme> filmes = lerArquivoFilmes(nomeArquivoFilmes);
+    std::string nomeArquivoFilmes = "filmesCrop1.txt";
+    std::vector<std::vector<Filme>> filmesPorGenero;
+    std::vector<Filme> filmes = lerArquivoFilmes(nomeArquivoFilmes, filmesPorGenero);
+    std::set<Filme *> resultadosSet;
+    //    std::string arquivocinemas = "cinemas.txt";
+//     std::vector< FilmesEmCartaz> filmesparapesquisa;
+//     std::vector<Cinema> cinemas = lerArquivoCinema(arquivocinemas, filmesparapesquisa, filmes );
 
     SortFilmes sortFilmes(filmes);
     sortFilmes.atualizar(); // Ordena os vetores de ponteiros
@@ -205,12 +229,21 @@ int main() {
 
                     break;
                 }
-                case 2: {
+                case 2:  { // Busca por gênero de filme
                     std::string genero;
-                    std::cout << "Digite o(s) gênero(s) de filme(s): ";
+                    std::cout << "Digite o gênero de filme: ";
                     std::cin >> genero;
-                    // buscaResultados = sortFilmes.buscaBinariaMultiplosResultados(
-                    //     sortFilmes.genresArrayPtr, genero, &Filme::getGenres);
+
+                    int genreIndex = getGenreIndex(genero);
+                    if (genreIndex != -1 && !filmesPorGenero[genreIndex].empty()) {
+                        for (const auto& filme : filmesPorGenero[genreIndex]) {
+                            std::cout << "Filme: " << filme.getPrimaryTitle() 
+                                      << " | Gênero: " << genero << "\n";
+                        }
+                    } else {
+                        std::cout << "Nenhum filme encontrado para o gênero " << genero << "\n";
+                    }
+
                     break;
                 }case 3: {
                         int minDuracao, maxDuracao;
@@ -233,28 +266,27 @@ int main() {
                         // Agora, buscaResultados contém todos os filmes dentro do intervalo de duração
                         break;
                     }case 4: {
-                        int anoInicio, anoFim;
-                        std::cout << "Digite o ano de início: ";
-                        std::cin >> anoInicio; 
-                        std::cout << "Digite o ano de fim: ";
-                        std::cin >> anoFim;
-
                         std::vector<Filme*> startYearArrayPtr = sortFilmes.startYearArrayPtr;
+                         int anoInicio;
+                        std::cout << "Digite o ano de início: ";
+                        std::cin >> anoInicio;   
+               
+                      
 
-                        for (const auto filme : startYearArrayPtr) {
+                            for (const auto filme : startYearArrayPtr) {
                             // Verifica se o filme tem um startYear e endYear válidos
                             bool temStartYearValido = filme->getStartYear() != -11 && filme->getStartYear() != 0;
-                            bool temEndYearValido = filme->getEndYear() != -11 && filme->getEndYear() != 0;
+                         
 
                             // Verifica se o filme está completamente dentro do intervalo de anos
-                            bool dentroDoIntervalo = (temStartYearValido && filme->getStartYear() <= anoFim) &&
-                                                        (temEndYearValido && filme->getEndYear() >= anoInicio);
+                            bool dentroDoIntervalo = (temStartYearValido && filme->getStartYear()>= anoInicio);
 
                             // Inclui o filme se estiver completamente dentro do intervalo
                             if (dentroDoIntervalo) {
                                 buscaResultados.push_back(filme);
                             }
                         }
+                        
 
                         // Agora, buscaResultados contém todos os filmes dentro do intervalo de anos
                         break;
@@ -329,20 +361,30 @@ int main() {
                         break;
                     }
                     case 4: {
-                        int anoInicio, anoFim;
-                        std::cout << "Digite o ano de início e o ano de fim: ";
-                        std::cin >> anoInicio >> anoFim;
-                        resultadosTemp = sortFilmes.buscaLinearMultiplosResultados(
-                            sortFilmes.startYearArrayPtr, anoInicio, &Filme::getStartYear);
-                        // Filtrar por intervalo
-                        resultadosTemp.erase(
-                            std::remove_if(resultadosTemp.begin(), resultadosTemp.end(),
-                                           [anoInicio, anoFim](Filme* f) {
-                                               int ano = f->getStartYear();
-                                               return ano < anoInicio || ano > anoFim;
-                                           }),
-                            resultadosTemp.end());
-                        break;
+                            std::vector<Filme*> startYearArrayPtr = sortFilmes.startYearArrayPtr;
+                            int anoInicio;
+                            std::cout << "Digite o ano de início: ";
+                            std::cin >> anoInicio;   
+                
+                        
+
+                                for (const auto filme : startYearArrayPtr) {
+                                // Verifica se o filme tem um startYear e endYear válidos
+                                bool temStartYearValido = filme->getStartYear() != -11 && filme->getStartYear() != 0;
+                            
+
+                                // Verifica se o filme está completamente dentro do intervalo de anos
+                                bool dentroDoIntervalo = (temStartYearValido && filme->getStartYear()>= anoInicio);
+
+                                // Inclui o filme se estiver completamente dentro do intervalo
+                                if (dentroDoIntervalo) {
+                                    buscaResultados.push_back(filme);
+                                }
+                            }
+                            
+
+                            // Agora, buscaResultados contém todos os filmes dentro do intervalo de anos
+                            break;
                     }
                     default:
                         std::cout << "Opção inválida\n";
@@ -360,8 +402,16 @@ int main() {
         }
         buscaResultados = intersecaoResultados;
     } else if (logica == 1) { // "OU"
+
+       
+
         for (auto& filme : resultadosTemp) {
-            buscaResultados.push_back(filme); // Adiciona os novos resultados ao vetor original
+           if(buscaBinariaDuplicatas(buscaResultados, filme->tconst)==0){
+
+                buscaResultados.push_back(filme);
+                 //resultadosSet.insert(*&filme);
+            }
+           
         }
     }
 

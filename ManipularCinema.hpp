@@ -33,8 +33,8 @@ class ManipularCinema{
 
  void atualizarCinema( std::string nomeArquivo) {
 
-
-    std::vector<Filme> filmes = lerArquivoFilmes(nomeArquivo);
+    std::vector<std::vector<Filme>> filmesPorGenero;
+    std::vector<Filme> filmes = lerArquivoFilmes(nomeArquivo, filmesPorGenero);
     SortFilmes sort(filmes);
      sort.atualizar();
 

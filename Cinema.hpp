@@ -178,7 +178,7 @@ static std::vector<Cinema> lerArquivoCinema(const std::string& nomeArquivo, std:
 
             if (filmeptr) {
                 filmeptr->vetor_idcinemas.push_back(Cinema_ID);
-                contadorFilmes++;
+                std::cout<<Cinema_ID;
               // Incrementa o contador de filmes lidos
 
                 // Verifica e imprime a quantidade de cinemas associados ao filme
