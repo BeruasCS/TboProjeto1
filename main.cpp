@@ -211,9 +211,6 @@ int main()
     std::vector<std::vector<Filme>> filmesPorGenero;
     std::vector<Filme> filmes = lerArquivoFilmes(nomeArquivoFilmes, filmesPorGenero);
     std::set<Filme *> resultadosSet;
-    //    std::string arquivocinemas = "cinemas.txt";
-    //     std::vector< FilmesEmCartaz> filmesparapesquisa;
-    //     std::vector<Cinema> cinemas = lerArquivoCinema(arquivocinemas, filmesparapesquisa, filmes );
 
     SortFilmes sortFilmes(filmes);
     sortFilmes.atualizar(); // Ordena os vetores de ponteiros
@@ -221,9 +218,7 @@ int main()
     sortFilmes.merge_sort(sortFilmes.runtimeMinutesArrayPtr, compareByRuntimeMinutes);
     sortFilmes.merge_sort(sortFilmes.startYearArrayPtr, compareByStartYear);
     sortFilmes.merge_sort(sortFilmes.genresArrayPtr, compareByGenres);
-    
 
-    std::cout << "tamanho do vetor de ptr titleType" << sortFilmes.titleTypeArrayPtr.size();
 
     std::cout << "Programa inicializado\n";
 
