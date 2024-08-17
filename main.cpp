@@ -208,9 +208,12 @@ int main()
 
     std::cout << "Inicializando programa...\n";
     std::string nomeArquivoFilmes = "filmesCrop.txt";
+    std::string nomeArquivoCinema= "cinemas.txt";
+    std::vector<FilmesEmCartaz> filmesemcartaz; 
+
     std::vector<std::vector<Filme>> filmesPorGenero;
     std::vector<Filme> filmes = lerArquivoFilmes(nomeArquivoFilmes, filmesPorGenero);
-
+    std::vector<Cinema> cinemas = lerArquivoCinema(nomeArquivoCinema, filmesemcartaz, filmes);
 
     SortFilmes sortFilmes(filmes);
     sortFilmes.atualizar(); // Ordena os vetores de ponteiros
@@ -339,6 +342,7 @@ int main()
                 std::cout << buscaResultados.size() << "\n";
                 std::cout << "ID: " << filme->getTconst() << "\n";
                 std::cout << "Titulo primario: " << filme->getPrimaryTitle() << "\n";
+                 std::cout << "Cinemas: " << filme->getvetor_ID().size() << "\n";
             }
 
             // Combinação de resultados
