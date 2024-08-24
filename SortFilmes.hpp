@@ -4,13 +4,15 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <fstream>
+#include <sstream>
 #include <algorithm>
 #include "Filme.hpp"
 
 class SortFilmes
 {
 public:
-    std::vector<Filme *> tconstArrayPtr;
+    std::vector<Filme> tconstArray;
     std::vector<Filme *> titleTypeArrayPtr;
     std::vector<Filme *> primaryTitleArrayPtr;
     std::vector<Filme *> originalTitleArrayPtr;
@@ -19,17 +21,208 @@ public:
     std::vector<Filme *> endYearArrayPtr;
     std::vector<Filme *> runtimeMinutesArrayPtr;
     std::vector<Filme *> genresArrayPtr;
-    // std::vector<Filme*> filmesDesseGenero;
-    std::vector<Filme> filmes;
+    std::vector<Filme> &filmes;  // Agora é uma referência
 
-    SortFilmes(std::vector<Filme> &filmes)
-        : filmes(filmes) {}
+    // Construtor que recebe o vetor filmes por referência
+    SortFilmes(std::vector<Filme> &filmesRef) : filmes(filmesRef) {
 
-    ~SortFilmes() {}
+         // Inicializa o array com ponteiros nulos para o hash
+        tconstArray.resize(1277665);
+
+    }
+
+     // Função de hash para converter tconst em um índice
+int hashTconst(const std::string &tconst)
+{
+    // Verifica se o tconst tem o prefixo "tt"
+    if (tconst.size() > 2 && tconst.substr(0, 2) == "tt")
+    {
+        try
+        {
+            // Remove o prefixo "tt" e converte o restante para um número inteiro
+            std::string numStr = tconst.substr(2);
+            int tconstNum = std::stoi(numStr); // Converte a substring para int
+            //std::cout << tconstNum << std::endl; // Para depuração
+
+            return tconstNum - 7917518; // Ajusta o valor conforme a faixa de tconst
+        }
+        catch (const std::invalid_argument &e)
+        {
+            std::cerr << "Erro: Argumento inválido na conversão de tconst para int: " << e.what() << std::endl;
+        }
+        catch (const std::out_of_range &e)
+        {
+            std::cerr << "Erro: Valor fora do intervalo na conversão de tconst para int: " << e.what() << std::endl;
+        }
+    }
+    else
+    {
+        std::cerr << "Erro: tconst deve começar com 'tt'" << std::endl;
+    }
+
+    return -1; // Valor padrão para indicar erro
+}
+
+
+
+
+// Função para mapear cada gênero ao índice correspondente na matriz de vetores
+int getGenreIndex(const std::string &genre)
+{
+    if (genre == "Action")
+        return 0;
+    if (genre == "Adult")
+        return 1;
+    if (genre == "Adventure")
+        return 2;
+    if (genre == "Animation")
+        return 3;
+    if (genre == "Biography")
+        return 4;
+    if (genre == "Comedy")
+        return 5;
+    if (genre == "Crime")
+        return 6;
+    if (genre == "Documentary")
+        return 7;
+    if (genre == "Drama")
+        return 8;
+    if (genre == "Family")
+        return 9;
+    if (genre == "Fantasy")
+        return 10;
+    if (genre == "Game-Show")
+        return 11;
+    if (genre == "History")
+        return 12;
+    if (genre == "Horror")
+        return 13;
+    if (genre == "Music")
+        return 14;
+    if (genre == "Musical")
+        return 15;
+    if (genre == "Mystery")
+        return 16;
+    if (genre == "NULL")
+        return 17;
+    if (genre == "News")
+        return 18;
+    if (genre == "Reality-TV")
+        return 19;
+    if (genre == "Romance")
+        return 20;
+    if (genre == "Sci-Fi")
+        return 21;
+    if (genre == "Short")
+        return 22;
+    if (genre == "Sport")
+        return 23;
+    if (genre == "Talk-Show")
+        return 24;
+    if (genre == "Thriller")
+        return 25;
+    if (genre == "War")
+        return 26;
+    if (genre == "Western")
+        return 27;
+
+    return -1; // Retorna -1 se o gênero não for encontrado
+}
+
+// Função para ler o arquivo de filmes, preencher a matriz de vetores por gênero e retornar o vetor de todos os filmes
+void lerArquivoFilmes(const std::string &nomeArquivo, std::vector<std::vector<Filme>> &filmesPorGenero)
+{
+ 
+    filmesPorGenero.resize(28); // Redimensiona a matriz com 28 vetores
+
+    std::ifstream file(nomeArquivo);
+    if (!file.is_open())
+    {
+        std::cerr << "Erro ao abrir o arquivo " << nomeArquivo << std::endl;
+        
+    }
+
+    std::string linha;
+    // Ignora a primeira linha (cabeçalho)
+    std::getline(file, linha);
+
+    while (std::getline(file, linha))
+    {
+        std::istringstream iss(linha);
+        std::string tconst, titleType, primaryTitle, originalTitle, isAdultStr, startYearStr, endYearStr, runtimeMinutesStr, genresStr;
+        std::vector<std::string> vetor_idcinemas;
+
+        std::getline(iss, tconst, '\t');
+        std::getline(iss, titleType, '\t');
+        std::getline(iss, primaryTitle, '\t');
+        std::getline(iss, originalTitle, '\t');
+        std::getline(iss, isAdultStr, '\t');
+        std::getline(iss, startYearStr, '\t');
+        std::getline(iss, endYearStr, '\t');
+        std::getline(iss, runtimeMinutesStr, '\t');
+        std::getline(iss, genresStr, '\t');
+
+        bool isAdult = isAdultStr == "1";
+        int startYear = 0, endYear = 0, runtimeMinutes = 0;
+
+        try
+        {
+            startYear = startYearStr != "\\N" ? std::stoi(startYearStr) : -11;
+        }
+        catch (const std::invalid_argument &e)
+        {
+            startYear = -11;
+        }
+
+        try
+        {
+            endYear = endYearStr != "\\N" ? std::stoi(endYearStr) : -11;
+        }
+        catch (const std::invalid_argument &e)
+        {
+            endYear = -11;
+        }
+
+        try
+        {
+            runtimeMinutes = runtimeMinutesStr != "\\N" ? std::stoi(runtimeMinutesStr) : -11;
+        }
+        catch (const std::invalid_argument &e)
+        {
+            runtimeMinutes = -11;
+        }
+
+        std::vector<std::string> genres;
+        std::istringstream genresStream(genresStr);
+        std::string genre;
+        while (std::getline(genresStream, genre, ','))
+        {
+            genres.push_back(genre);
+        }
+
+        Filme filme(tconst, titleType, primaryTitle, originalTitle, isAdult, startYear, endYear, runtimeMinutes, genres, vetor_idcinemas);
+
+        // Adiciona o filme ao vetor de todos os filmes
+        filmes.push_back(filme);
+
+        // Adiciona o filme a cada vetor correspondente ao gênero
+        for (const std::string &g : genres)
+        {
+            int genreIndex = getGenreIndex(g);
+            if (genreIndex != -1)
+            {
+                filmesPorGenero[genreIndex].push_back(filme);
+            }
+        }
+    }
+
+    file.close();
+
+}
 
     void atualizar()
     {
-        tconstArrayPtr.clear();
+     
         titleTypeArrayPtr.clear();
         primaryTitleArrayPtr.clear();
         originalTitleArrayPtr.clear();
@@ -41,7 +234,16 @@ public:
 
         for (auto &filme : filmes)
         {
-            tconstArrayPtr.push_back(&filme);
+        
+          int index = hashTconst(filme.getTconst());
+            if (index >= 0 && index < tconstArray.size())
+            {
+                tconstArray[1277664] = filme;
+            }
+            std::cout<<index<<"\n";
+            std::cout<<tconstArray[index].getPrimaryTitle()<<"\n";
+            
+
             titleTypeArrayPtr.push_back(&filme);
             primaryTitleArrayPtr.push_back(&filme);
             originalTitleArrayPtr.push_back(&filme);
@@ -52,8 +254,8 @@ public:
             genresArrayPtr.push_back(&filme);
         }
 
-        // std::cout << "\nEntrou na função atualizar";
     }
+
 
     std::vector<Filme *> merge_sort(std::vector<Filme *> array, bool (*compareFilme)(Filme *, Filme *))
     {
@@ -122,31 +324,53 @@ public:
         return resultados;
     }
 
-    Filme *buscaBinariaPorTconst(std::vector<Filme> &filmes, const std::string &tconst)
+    int buscaBinariaPorTconst(std::vector<Filme> &filmes, const std::string &tconst)
     {
         int low = 0;
         int high = filmes.size() - 1;
 
         while (low <= high)
         {
-            int mid = low + (high - low) / 2;
+            int meio = low + (high - low) / 2;
 
-            if (filmes[mid].getTconst() < tconst)
+            std::string tconstMeio = filmes[meio].tconst;
+
+            if (tconstMeio == tconst)
             {
-                low = mid + 1;
+                return meio;
             }
-            else if (filmes[mid].getTconst() > tconst)
+            else if (tconst < tconstMeio)
             {
-                high = mid - 1;
+                high = meio - 1;
             }
             else
             {
-                return &filmes[mid]; // Retorna o endereço do filme encontrado
+                low = meio + 1;
             }
         }
 
-        return nullptr; // Retorna nullptr se não encontrar o tconst
+        return -1;
     }
+    Filme buscarFilmePorTconst(const std::string &tconst)
+    {
+        int index = hashTconst(tconst);
+
+        std::cout<<index<<"\n";
+      
+        if (index >= 0 && index < tconstArray.size())
+        {
+           if (index >= 0 && index < tconstArray.size()) {
+    std::cout << tconstArray[index].getTconst() << "\n";
+} else {
+    std::cout << "Filme não encontrado ou ponteiro nulo.\n";
+}
+            return tconstArray[index];
+        }
+        //return nullptr; // Retorna nullptr se o filme não for encontrado
+    }
+
+
+
 };
 
 #endif
