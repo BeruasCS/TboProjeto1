@@ -351,7 +351,7 @@ void lerArquivoFilmes(const std::string &nomeArquivo, std::vector<std::vector<Fi
 
         return -1;
     }
-   Filme buscarFilmePorTitulo(const int index) {
+   Filme buscarFilme(const int index) {
     if (index >= 0 && index < tconstArray.size()) {
        // std::cout<<tconstArray[index].getOriginalTitle();
         return tconstArray[index];

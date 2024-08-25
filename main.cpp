@@ -170,10 +170,10 @@ int main()
     std::vector<Cinema> cinema;
 
     //passando filmes p cinema
-    Cinema cinemas(filmes);
+    Cinema cinemas(cinema);
 
     //lendo os arquivos
-    cinemas.lerArquivoCinema(nomeArquivoCinema, filmesemcartaz);
+    cinemas.lerArquivoCinema(nomeArquivoCinema);
     sortFilmes.lerArquivoFilmes(nomeArquivoFilmes, filmesPorGenero);
 
 
@@ -487,14 +487,89 @@ int main()
             int tipoBusca;
             std::cin >> tipoBusca;
 
+
+            std::vector<Filme *> buscaResultados;
+
             switch (tipoBusca)
             {
             case 1:
             {
                 // 1. Cinemas que contém filmes de um ou mais tipos (coluna titleType).
-                std::cout<<"caso 1";
-               /* code */
-                break; 
+                 std::string tipo;
+                 std::cout << "Digite o(s) tipo(s) de filme(s): ";
+                 std::cin >> tipo;
+
+                // // Busca os filmes correspondentes ao tipo fornecido
+                // buscaResultados = sortFilmes.buscaLinearMultiplosResultados(
+                //     sortFilmes.titleTypeArrayPtr, tipo, &Filme::getTitleType);
+
+                // Itera sobre cada cinema
+                int indexCinema;
+                Filme filmeDoCinema;
+                for (const auto &cinemaASeAnalisar : cinema)
+                {
+                    //bool possuiFilmeDoTipo = false;
+
+                    // Verifica se o cinema possui algum filme do tipo buscado
+                    //std::cout<<"Cinema: "<<cinemaASeAnalisar.Cinema_ID<<std::endl;
+                    for (const auto &filmeEmCinema : cinemaASeAnalisar.Filmes_Em_Exibicao)
+                    {
+                        indexCinema=sortFilmes.hashTconst(filmeEmCinema);
+                        filmeDoCinema=sortFilmes.buscarFilme(indexCinema);
+                        if(filmeDoCinema.getTitleType()==tipo){
+
+                            std::cout<<"cinema: "<<cinemaASeAnalisar.Nome_do_Cinema<< std::endl;
+                            std::cout<<"Filme: "<<filmeEmCinema<< std::endl;
+
+
+                        }
+
+                        
+
+                        // // Verifica se o filme está nos resultados da busca
+                        // auto it = std::find_if(
+                        //     buscaResultados.begin(),
+                        //     buscaResultados.end(),
+                        //     [&](const Filme *filme)
+                        //     {
+                        //         return filme->getTconst() == filmeEmCinema;
+                        //     });
+
+                        // if (it != buscaResultados.end())
+                        // {
+                        //     possuiFilmeDoTipo = true;
+                        //     break;
+                        // }
+                    }
+
+                    // Se o cinema possui pelo menos um filme do tipo buscado, imprime as informações
+                    // if (possuiFilmeDoTipo)
+                    // {
+                    //     std::cout << "Cinema ID: " << cinemaASeAnalisar.Cinema_ID << "\n";
+                    //     std::cout << "Nome do Cinema: " << cinemaASeAnalisar.Nome_do_Cinema << "\n";
+                    //     std::cout << "Filmes em Exibição do tipo '" << tipo << "':\n";
+
+                    //     for (const auto &filmeEmCinema : cinemaASeAnalisar.Filmes_Em_Exibicao)
+                    //     {
+                    //         auto it = std::find_if(
+                    //             buscaResultados.begin(),
+                    //             buscaResultados.end(),
+                    //             [&](const Filme *filme)
+                    //             {
+                    //                 return filme->getTconst() == filmeEmCinema;
+                    //             });
+
+                    //         if (it != buscaResultados.end())
+                    //         {
+                    //             std::cout << " - " << (*it)->getPrimaryTitle() << "\n";
+                    //         }
+                    //     }
+
+                    //     std::cout << "-----------------------------\n";
+                    // }
+                }
+
+                break;
             }
             case 2:
             {

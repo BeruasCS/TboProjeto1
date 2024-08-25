@@ -44,146 +44,118 @@ std::string trim(const std::string &str)
 
 class Cinema
 {
-
 private:
+
+    std::vector<Cinema> &cinemas; // Referência ao vetor de cinemas
+
+public:
     std::string Cinema_ID;
     std::string Nome_do_Cinema;
     int Coordenada_X;
     int Coordenada_Y;
     float Preco_Ingresso;
-    std::vector<std::string> Filmes_Em_Exibicao;
-    std::vector<Filme> &filmes; // Referência ao vetor de filmes
-
-public:
-    // Construtor
    
-
-   Cinema(std::vector<Filme> &filmes) 
-           : Cinema_ID(), 
-             Nome_do_Cinema(), 
-             Coordenada_X(-11), 
-             Coordenada_Y(-11), 
-             Preco_Ingresso(-11), 
-             Filmes_Em_Exibicao(),
-             filmes(filmes)  // Inicializa a referência
+ std::vector<std::string> Filmes_Em_Exibicao;
+    // Construtor que recebe uma referência ao vetor de cinemas
+    Cinema(std::vector<Cinema> &cinemasRef)
+        : cinemas(cinemasRef) // Inicializa a referência
     {
-        // Aqui você pode adicionar qualquer lógica adicional que 
-        // desejar executar durante a construção do objeto.
     }
 
-
-
-    // Função para ler o arquivo de cinemas e retornar um vetor de objetos Cinema
-void lerArquivoCinema(const std::string &nomeArquivo, std::vector<FilmesEmCartaz> &filmesParaPesquisa)
-{
-    std::vector<Cinema> Cinemas;
-    std::ifstream file(nomeArquivo);
-    SortFilmes sort(filmes);
-
-    if (!file.is_open())
+    // Método para adicionar um novo cinema ao vetor
+    void adicionarCinema(const std::string &id, const std::string &nome, int coordX, int coordY, float preco, const std::vector<std::string> &filmes)
     {
-        std::cerr << "Erro ao abrir o arquivo " << nomeArquivo << std::endl;
+        Cinema_ID = id;
+        Nome_do_Cinema = nome;
+        Coordenada_X = coordX;
+        Coordenada_Y = coordY;
+        Preco_Ingresso = preco;
+        Filmes_Em_Exibicao = filmes;
+
+        // Adiciona o cinema ao vetor de cinemas
+        cinemas.push_back(*this);
     }
 
-    std::string linha;
-    // Ignora a primeira linha (cabeçalho)
-    std::getline(file, linha);
-
- while (std::getline(file, linha))
-{
-    std::istringstream iss(linha);
-    std::string Cinema_ID, Nome_do_Cinema, Coordenada_X_str, Coordenada_Y_str, Preco_Ingresso_str;
-
-    // Limpa o vetor antes de começar a leitura dos filmes de um novo cinema
-    Filmes_Em_Exibicao.clear();
-
-    // Lê as partes da linha uma por uma
-    std::getline(iss, Cinema_ID, ',');
-    std::getline(iss, Nome_do_Cinema, ',');
-    std::getline(iss, Coordenada_X_str, ',');
-    std::getline(iss, Coordenada_Y_str, ',');
-    std::getline(iss, Preco_Ingresso_str, ',');
-
-    Cinema_ID = trim(Cinema_ID);
-    Nome_do_Cinema = trim(Nome_do_Cinema);
-    Coordenada_X_str = trim(Coordenada_X_str);
-    Coordenada_Y_str = trim(Coordenada_Y_str);
-    Preco_Ingresso_str = trim(Preco_Ingresso_str);
-
-    int Coordenada_X = -11;
-    int Coordenada_Y = -11;
-    float Preco_Ingresso = -11.0f;
-
-    try
+    // Função para ler o arquivo de cinemas e adicionar ao vetor
+    void lerArquivoCinema(const std::string &nomeArquivo)
     {
-        Coordenada_X = Coordenada_X_str != "\\N" ? std::stoi(Coordenada_X_str) : -11;
+        std::ifstream file(nomeArquivo);
+
+        if (!file.is_open())
+        {
+            std::cerr << "Erro ao abrir o arquivo " << nomeArquivo << std::endl;
+            return;
+        }
+
+        std::string linha;
+        // Ignora a primeira linha (cabeçalho)
+        std::getline(file, linha);
+
+        while (std::getline(file, linha))
+        {
+            std::istringstream iss(linha);
+            std::string Cinema_ID, Nome_do_Cinema, Coordenada_X_str, Coordenada_Y_str, Preco_Ingresso_str;
+
+            // Limpa o vetor antes de começar a leitura dos filmes de um novo cinema
+            Filmes_Em_Exibicao.clear();
+
+            // Lê as partes da linha uma por uma
+            std::getline(iss, Cinema_ID, ',');
+            std::getline(iss, Nome_do_Cinema, ',');
+            std::getline(iss, Coordenada_X_str, ',');
+            std::getline(iss, Coordenada_Y_str, ',');
+            std::getline(iss, Preco_Ingresso_str, ',');
+
+            Cinema_ID = trim(Cinema_ID);
+            Nome_do_Cinema = trim(Nome_do_Cinema);
+            Coordenada_X_str = trim(Coordenada_X_str);
+            Coordenada_Y_str = trim(Coordenada_Y_str);
+            Preco_Ingresso_str = trim(Preco_Ingresso_str);
+
+            int Coordenada_X = -11;
+            int Coordenada_Y = -11;
+            float Preco_Ingresso = -11.0f;
+
+            try
+            {
+                Coordenada_X = Coordenada_X_str != "\\N" ? std::stoi(Coordenada_X_str) : -11;
+            }
+            catch (const std::invalid_argument &)
+            {
+                Coordenada_X = -11;
+            }
+
+            try
+            {
+                Coordenada_Y = Coordenada_Y_str != "\\N" ? std::stoi(Coordenada_Y_str) : -11;
+            }
+            catch (const std::invalid_argument &)
+            {
+                Coordenada_Y = -11;
+            }
+
+            try
+            {
+                Preco_Ingresso = Preco_Ingresso_str != "\\N" ? std::stof(Preco_Ingresso_str) : -11.0f;
+            }
+            catch (const std::invalid_argument &)
+            {
+                Preco_Ingresso = -11.0f;
+            }
+
+            // Agora vamos pegar todos os filmes restantes
+            std::string filmelido;
+            while (std::getline(iss, filmelido, ','))
+            {
+                Filmes_Em_Exibicao.push_back(trim(filmelido));
+            }
+
+            // Adiciona o cinema ao vetor usando o método adicionarCinema
+            adicionarCinema(Cinema_ID, Nome_do_Cinema, Coordenada_X, Coordenada_Y, Preco_Ingresso, Filmes_Em_Exibicao);
+        }
+
+        file.close();
     }
-    catch (const std::invalid_argument &)
-    {
-        Coordenada_X = -11;
-    }
-
-    try
-    {
-        Coordenada_Y = Coordenada_Y_str != "\\N" ? std::stoi(Coordenada_Y_str) : -11;
-    }
-    catch (const std::invalid_argument &)
-    {
-        Coordenada_Y = -11;
-    }
-
-    try
-    {
-        Preco_Ingresso = Preco_Ingresso_str != "\\N" ? std::stof(Preco_Ingresso_str) : -11.0f;
-    }
-    catch (const std::invalid_argument &)
-    {
-        Preco_Ingresso = -11.0f;
-    }
-
-    // Agora vamos pegar todos os filmes restantes
-    std::vector<std::string> Filmes;
-    std::string filmelido;
-    int contadorFilmes = 0; // Contador para o número de filmes lidos
-
-    // Os filmes estão todos na mesma string que sobrou
-    while (std::getline(iss, filmelido, ','))
-    {
-        contadorFilmes++;
-        Filmes_Em_Exibicao.push_back(trim(filmelido));
-    }
-
-    // Imprime o número total de filmes lidos para o cinema
-    std::cout << "Número total de filmes lidos para o cinema " << Cinema_ID << ": " << contadorFilmes << std::endl;
-
-    std::cout << "Número de filmes armazenados em Filmes_Em_Exibicao: " << Filmes_Em_Exibicao.size() << std::endl;
-
-    // Imprime o conteúdo do vetor Filmes_Em_Exibicao
-    std::cout << "Filmes em exibição no cinema " << Cinema_ID << ":" << std::endl;
-    for (size_t i = 0; i < Filmes_Em_Exibicao.size(); i++)
-    {
-        std::cout << "Filme " << i + 1 << ": " << Filmes_Em_Exibicao[i] << std::endl;
-    }
-
-
-        // Cinema cinema(Cinema_ID, Nome_do_Cinema, Coordenada_X, Coordenada_Y, Preco_Ingresso, Filmes, filmes);
-        // Cinemas.push_back(cinema);
-    }
-
-    file.close();
-
-    // Ordena o vetor filmesParaPesquisa usando merge sort
-  //  mergeSort(filmesParaPesquisa, 0, filmesParaPesquisa.size() - 1);
-    
-
-}
-
-
-
-
-
-
-    
 };
 
 // Função para realizar o merge de dois subvetores
@@ -247,7 +219,5 @@ void mergeSort(std::vector<FilmesEmCartaz> &vec, int left, int right)
         merge(vec, left, mid, right);
     }
 }
-
-
 
 #endif
