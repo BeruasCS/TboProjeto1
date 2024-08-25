@@ -41,10 +41,10 @@ bool compareByStartYear(Filme *a, Filme *b)
 {
     return a->getStartYear() < b->getStartYear();
 }
-bool comparerByTconst(Filme *a, Filme *b)
-{
-    return a->getTconst() < b->getTconst();
-}
+// bool comparerByTconst(Filme *a, Filme *b)
+// {
+//     return a->getTconst() < b->getTconst();
+// }
 // bool compareByPreco(Cinema *a, Cinema *b)
 // {
 //     return a->getPrecoIngresso() < b->getPrecoIngresso();
@@ -103,6 +103,25 @@ void exibirMenuBusca()
     std::cout << "3. Filmes com uma duração específica entre um limite inferior e superior em minutos.\n";
     std::cout << "4. Filmes lançados em um ano específico ou em um intervalo de anos.\n";
 }
+void exibirMenuBuscaCinemas()
+{
+
+    // 1. Cinemas que contém filmes de um ou mais tipos (coluna titleType).
+    // 2. Cinemas que contém filmes que pertencem a um ou mais gêneros (coluna
+    // genres).
+    // 3. Cinemas que contém filmes com uma duração específica entre um limite inferior e superior em minutos.
+    // 4. Cinemas em uma localização de até uma distância definida de um local.
+    // 5. Cinemas com preços até um limite superior de unidades monetárias.
+    // 6. Cinemas que contém filmes lançados em um ano específico ou em um
+    // intervalo de anos.
+    std::cout << "Qual busca deseja fazer?\n";
+    std::cout << "1. Cinemas que contém filmes de um ou mais tipos (coluna titleType).\n";
+    std::cout << "2. Cinemas que contém filmes que pertencem a um ou mais gêneros (colunagenres).\n";
+    std::cout << "3. Cinemas que contém filmes com uma duração específica entre um limite inferior e superior em minutos.\n";
+    std::cout << "4. Cinemas em uma localização de até uma distância definida de um local.\n";
+    std::cout << "5. Cinemas com preços até um limite superior de unidades monetárias.";
+    std::cout << "6. Cinemas que contém filmes lançados em um ano específico ou em um intervalo de anos.\n";
+}
 
 // Função para exibir o menu de combinação de resultados
 void exibirMenuCombinar()
@@ -140,29 +159,43 @@ int main()
     
 
     std::vector<std::vector<Filme>> filmesPorGenero;
+
+
+//vetor a ser passado para receber os filmes
     std::vector<Filme> filmes;
+
+//passando o vetor e criando o sortFilmes, tenho que mudar esses nomes
     SortFilmes sortFilmes(filmes);
+    //criando cinema
     std::vector<Cinema> cinema;
+
+    //passando filmes p cinema
     Cinema cinemas(filmes);
-    sortFilmes.atualizar();
-   // std::cout<<sortFilmes.tconstArrayPtr.size()<<"\n";
-    // Buscar um filme por tconst
-    //Filme *filme = sortFilmes.buscarFilmePorTconst("tt9195182");
-    // if (filme) {
-    //     std::cout << "Filme encontrado: " << filme->getPrimaryTitle() << std::endl;
-    // } else {
-    //     std::cout << "Filme não encontrado!" << std::endl;
-    // }
+
+    //lendo os arquivos
     cinemas.lerArquivoCinema(nomeArquivoCinema, filmesemcartaz);
     sortFilmes.lerArquivoFilmes(nomeArquivoFilmes, filmesPorGenero);
+
+
+//chamando a funcao atualizar
+    sortFilmes.atualizar();
+//verificando se esta sendo preenchido
+    // std::cout<<sortFilmes.tconstArray.size()<<"\n";
+//testando se to buscandio
+    //int filme = sortFilmes.hashTconst("tt9195166");
+    //std::cout<<filme<<"\n";
+    // Filme pesquisado = sortFilmes.buscarFilmePorTitulo(filme);
+    // std::cout<< pesquisado.getPrimaryTitle();
+    std::cout<<"executada essa parte";
     
-    sortFilmes.atualizar(); // Ordena os vetores de ponteiros
+      std::cout<<sortFilmes.tconstArray.size()<<"\n";
+   // sortFilmes.atualizar(); // Ordena os vetores de ponteiros
     sortFilmes.merge_sort(sortFilmes.titleTypeArrayPtr, compareByTitleType);
     sortFilmes.merge_sort(sortFilmes.runtimeMinutesArrayPtr, compareByRuntimeMinutes);
     sortFilmes.merge_sort(sortFilmes.startYearArrayPtr, compareByStartYear);
     sortFilmes.merge_sort(sortFilmes.genresArrayPtr, compareByGenres);
 
-    std::cout << filmes.size();
+  //  std::cout << filmes.size();
     std::cout << "Programa inicializado\n";
 
     bool continuar = true;
@@ -174,6 +207,17 @@ int main()
 
         int escolha;
         std::cin >> escolha;
+
+
+
+    // 1. Cinemas que contém filmes de um ou mais tipos (coluna titleType).
+    // 2. Cinemas que contém filmes que pertencem a um ou mais gêneros (coluna
+    // genres).
+    // 3. Cinemas que contém filmes com uma duração específica entre um limite inferior e superior em minutos.
+    // 4. Cinemas em uma localização de até uma distância definida de um local.
+    // 5. Cinemas com preços até um limite superior de unidades monetárias.
+    // 6. Cinemas que contém filmes lançados em um ano específico ou em um
+    // intervalo de anos.
 
         if (escolha == 0)
         { // Busca de filmes
@@ -439,7 +483,57 @@ int main()
         }
         else if (escolha == 1)
         {
-            // Implementar busca de cinemas, se necessário
+            exibirMenuBuscaCinemas();
+            int tipoBusca;
+            std::cin >> tipoBusca;
+
+            switch (tipoBusca)
+            {
+            case 1:
+            {
+                // 1. Cinemas que contém filmes de um ou mais tipos (coluna titleType).
+                std::cout<<"caso 1";
+               /* code */
+                break; 
+            }
+            case 2:
+            {
+
+               /* code */
+                break; 
+            }
+            case 3:
+            {
+
+               /* code */
+                break; 
+            }
+            case 4:
+            {
+
+               /* code */
+                break; 
+            }
+            case 5:
+            {
+
+               /* code */
+                break; 
+            }
+            case 6:
+            {
+
+               /* code */
+                break; 
+            }
+                
+            
+            default:
+            std::cout << "Opção inválida\n";
+                continue;
+                // break;
+            }
+
         }
         else
         {

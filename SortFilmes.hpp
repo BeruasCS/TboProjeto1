@@ -222,7 +222,7 @@ void lerArquivoFilmes(const std::string &nomeArquivo, std::vector<std::vector<Fi
 
     void atualizar()
     {
-     
+        //tconstArray.clear();
         titleTypeArrayPtr.clear();
         primaryTitleArrayPtr.clear();
         originalTitleArrayPtr.clear();
@@ -238,10 +238,10 @@ void lerArquivoFilmes(const std::string &nomeArquivo, std::vector<std::vector<Fi
           int index = hashTconst(filme.getTconst());
             if (index >= 0 && index < tconstArray.size())
             {
-                tconstArray[1277664] = filme;
+                tconstArray[index] = filme;
             }
-            std::cout<<index<<"\n";
-            std::cout<<tconstArray[index].getPrimaryTitle()<<"\n";
+           // std::cout<<index<<"\n";
+            //std::cout<<tconstArray[1277664].getPrimaryTitle()<<"\n";
             
 
             titleTypeArrayPtr.push_back(&filme);
@@ -351,23 +351,15 @@ void lerArquivoFilmes(const std::string &nomeArquivo, std::vector<std::vector<Fi
 
         return -1;
     }
-    Filme buscarFilmePorTconst(const std::string &tconst)
-    {
-        int index = hashTconst(tconst);
-
-        std::cout<<index<<"\n";
-      
-        if (index >= 0 && index < tconstArray.size())
-        {
-           if (index >= 0 && index < tconstArray.size()) {
-    std::cout << tconstArray[index].getTconst() << "\n";
-} else {
-    std::cout << "Filme não encontrado ou ponteiro nulo.\n";
-}
-            return tconstArray[index];
-        }
-        //return nullptr; // Retorna nullptr se o filme não for encontrado
+   Filme buscarFilmePorTitulo(const int index) {
+    if (index >= 0 && index < tconstArray.size()) {
+       // std::cout<<tconstArray[index].getOriginalTitle();
+        return tconstArray[index];
+    } else {
+        std::cout<< "Filme não encontrado.";
     }
+}
+
 
 
 
