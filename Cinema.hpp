@@ -12,7 +12,7 @@
 #include <locale>
 #include "Filme.hpp"
 #include "SortFilmes.hpp"
-
+#include <cmath>
 struct FilmesEmCartaz
 {
     std::string cinema_ID_Struct;
@@ -157,6 +157,11 @@ public:
         file.close();
     }
 };
+
+float calcularDistancia(int x1, int y1, int x2, int y2)
+{
+    return sqrt(pow(x2 - x1, 2) + pow(y2 - y1, 2));
+}
 
 // Função para realizar o merge de dois subvetores
 void merge(std::vector<FilmesEmCartaz> &vec, int left, int mid, int right)

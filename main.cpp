@@ -605,8 +605,8 @@ int main()
                             buscaResultadosCinema.push_back(cinemaASeAnalisar);
 
                             // Imprime o cinema e o filme correspondente
-                            std::cout << "Cinema: " << cinemaASeAnalisar.Nome_do_Cinema << std::endl;
-                            std::cout << "Filme: " << filmeEmCinema << std::endl;
+                            // std::cout << "Cinema: " << cinemaASeAnalisar.Nome_do_Cinema << std::endl;
+                            // std::cout << "Filme: " << filmeEmCinema << std::endl;
 
                             // Opcional: interrompe o loop para evitar duplicações de cinema no vetor
                             break;
@@ -615,6 +615,14 @@ int main()
                 }
                 // Percorrer o vetor Duracao
 
+
+                // Exibir todos os cinemas encontrados
+                std::cout << "Cinemas encontrados:" << std::endl;
+                for (const auto &resultadoCinema : buscaResultadosCinema)
+                {
+                    std::cout << "nome do cinema: "<<resultadoCinema.Nome_do_Cinema << std::endl;
+                }
+
                 // Agora, buscaResultados contém todos os filmes dentro do intervalo de duração
                 break;
 
@@ -622,15 +630,77 @@ int main()
             }
             case 4:
             {
+    int xReferencia, yReferencia;
+    float distanciaMaxima;
 
-               /* code */
-                break; 
+    std::cout << "Digite a coordenada X do ponto de referência: ";
+    std::cin >> xReferencia;
+    std::cout << "Digite a coordenada Y do ponto de referência: ";
+    std::cin >> yReferencia;
+    std::cout << "Digite a distância máxima: ";
+    std::cin >> distanciaMaxima;
+
+    std::vector<Cinema> cinemasProximos;
+
+    for (const auto &cinema : cinema)
+    {
+        float distancia = calcularDistancia(cinema.Coordenada_X, cinema.Coordenada_Y, xReferencia, yReferencia);
+
+        if (distancia <= distanciaMaxima)
+        {
+            cinemasProximos.push_back(cinema);
+        }
+    }
+
+    if (cinemasProximos.empty())
+    {
+        std::cout << "Nenhum cinema encontrado dentro da distância especificada.\n";
+    }
+    else
+    {
+        std::cout << "Cinemas encontrados dentro da distância especificada:\n";
+        for (const auto &cinema : cinemasProximos)
+        {
+            std::cout << "Cinema ID: " << cinema.Cinema_ID << "\n";
+            std::cout << "Nome: " << cinema.Nome_do_Cinema << "\n";
+            std::cout << "Coordenadas: (" << cinema.Coordenada_X << ", " << cinema.Coordenada_Y << ")\n";
+            std::cout << "Preço do Ingresso: " << cinema.Preco_Ingresso << "\n";
+            std::cout << "Filmes em Exibição: ";
+            for (const auto &filme : cinema.Filmes_Em_Exibicao)
+            {
+                std::cout << filme << " ";
+            }
+            std::cout << "\n\n";
+        }
+    }
+
+    break;
             }
             case 5:
             {
+                float maxPreco;
+                std::cout << "Digite o preco maximo: ";
+                std::cin >> maxPreco;
 
-               /* code */
-                break; 
+                int indexCinema;
+                Filme filmeDoCinema;
+                for (const auto &cinemaASeAnalisar : cinema)
+                {
+                    if(cinemaASeAnalisar.Preco_Ingresso<=maxPreco){
+                        // Adiciona o cinema ao vetor de resultados
+                            buscaResultadosCinema.push_back(cinemaASeAnalisar);
+                       // std::cout<<cinemaASeAnalisar.Nome_do_Cinema;
+                    }
+                }
+     
+                                // Exibir todos os cinemas encontrados
+                std::cout << "Cinemas encontrados:" << std::endl;
+                for (const auto &resultadoCinema : buscaResultadosCinema)
+                {
+                    std::cout << "nome do cinema: "<<resultadoCinema.Nome_do_Cinema << std::endl;
+                }
+                // Agora, buscaResultados contém todos os filmes dentro do intervalo de duração
+                break;
             }
             case 6:
             {
@@ -662,8 +732,8 @@ int main()
                     {
                         buscaResultadosCinema.push_back(cinemaASeAnalisar);
                                // Imprime o cinema e o filme correspondente
-                            std::cout << "Cinema: " << cinemaASeAnalisar.Nome_do_Cinema << std::endl;
-                            std::cout << "Filme: " << filmeEmCinema << std::endl;
+                            // std::cout << "Cinema: " << cinemaASeAnalisar.Nome_do_Cinema << std::endl;
+                            // std::cout << "Filme: " << filmeEmCinema << std::endl;
 
                     }
 
@@ -671,13 +741,12 @@ int main()
                 }
                 
 
-
-
-
-
-
-
-
+                                // Exibir todos os cinemas encontrados
+                std::cout << "Cinemas encontrados:" << std::endl;
+                for (const auto &resultadoCinema : buscaResultadosCinema)
+                {
+                    std::cout << "nome do cinema: "<<resultadoCinema.Nome_do_Cinema << std::endl;
+                }
                /* code */
                 break; 
             }
