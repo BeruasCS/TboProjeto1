@@ -324,33 +324,7 @@ void lerArquivoFilmes(const std::string &nomeArquivo, std::vector<std::vector<Fi
         return resultados;
     }
 
-    int buscaBinariaPorTconst(std::vector<Filme> &filmes, const std::string &tconst)
-    {
-        int low = 0;
-        int high = filmes.size() - 1;
 
-        while (low <= high)
-        {
-            int meio = low + (high - low) / 2;
-
-            std::string tconstMeio = filmes[meio].tconst;
-
-            if (tconstMeio == tconst)
-            {
-                return meio;
-            }
-            else if (tconst < tconstMeio)
-            {
-                high = meio - 1;
-            }
-            else
-            {
-                low = meio + 1;
-            }
-        }
-
-        return -1;
-    }
    Filme buscarFilme(const int index) {
     if (index >= 0 && index < tconstArray.size()) {
        // std::cout<<tconstArray[index].getOriginalTitle();

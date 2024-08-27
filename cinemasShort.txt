@@ -1,0 +1,3 @@
+Cinema_ID, Nome_do_Cinema, Coordenada_X, Coordenada_Y, Preço_Ingresso, Filmes_Em_Exibição
+cc00001, Cineplex Estrela, 347865, 478921, 12.50, tt7917518, tt8000042, tt7917522
+cc00002, CineArt Palace, 123456, 789012, 10.00, tt8000034, tt7917520

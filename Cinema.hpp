@@ -14,16 +14,7 @@
 #include "SortFilmes.hpp"
 #include <cmath>
 
-struct FilmesEmCartaz
-{
-    std::string cinema_ID_Struct;
-    Filme filmedocinema;
-};
 
-bool compareByTconst(Filme *a, Filme *b)
-{
-    return a->getTconst() < b->getTconst();
-}
 
 std::string trim(const std::string &str)
 {
@@ -129,64 +120,7 @@ float calcularDistancia(int x1, int y1, int x2, int y2)
     return sqrt(pow(x2 - x1, 2) + pow(y2 - y1, 2));
 }
 
-void merge(std::vector<FilmesEmCartaz> &vec, int left, int mid, int right)
-{
-    int n1 = mid - left + 1;
-    int n2 = right - mid;
 
-    std::vector<FilmesEmCartaz> L(n1);
-    std::vector<FilmesEmCartaz> R(n2);
 
-    for (int i = 0; i < n1; i++)
-    {
-        L[i] = vec[left + i];
-    }
-    for (int j = 0; j < n2; j++)
-    {
-        R[j] = vec[mid + 1 + j];
-    }
-
-    int i = 0, j = 0, k = left;
-    while (i < n1 && j < n2)
-    {
-        if (L[i].filmedocinema.tconst <= R[j].filmedocinema.tconst)
-        {
-            vec[k] = L[i];
-            i++;
-        }
-        else
-        {
-            vec[k] = R[j];
-            j++;
-        }
-        k++;
-    }
-
-    while (i < n1)
-    {
-        vec[k] = L[i];
-        i++;
-        k++;
-    }
-
-    while (j < n2)
-    {
-        vec[k] = R[j];
-        j++;
-        k++;
-    }
-}
-
-void mergeSort(std::vector<FilmesEmCartaz> &vec, int left, int right)
-{
-    if (left < right)
-    {
-        int mid = left + (right - left) / 2;
-
-        mergeSort(vec, left, mid);
-        mergeSort(vec, mid + 1, right);
-        merge(vec, left, mid, right);
-    }
-}
 
 #endif

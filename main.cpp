@@ -6,7 +6,6 @@
 #include "Filme.hpp"
 #include "SortFilmes.hpp"
 #include "Cinema.hpp"
-#include "ManipularCinema.hpp"
 
 // Funções de comparação
 bool compareByTitleType(Filme *a, Filme *b)
@@ -21,14 +20,7 @@ bool compareByGenres(Filme *a, Filme *b)
 {
     return a->getGenres() < b->getGenres();
 }
-bool compareByIsAdult(Filme *a, Filme *b)
-{
-    return a->getIsAdult() < b->getIsAdult();
-}
-bool compareByOriginalTitle(Filme *a, Filme *b)
-{
-    return a->getOriginalTitle() < b->getOriginalTitle();
-}
+
 bool compareByPrimaryTitle(Filme *a, Filme *b)
 {
     return a->getPrimaryTitle() < b->getPrimaryTitle();
@@ -49,42 +41,6 @@ bool compareByStartYear(Filme *a, Filme *b)
 // {
 //     return a->getPrecoIngresso() < b->getPrecoIngresso();
 // }
-void removeCharacter(std::string &str, char charToRemove)
-{
-    str.erase(remove(str.begin(), str.end(), charToRemove), str.end());
-}
-
-int binarySearchTconst(const std::vector<Filme *> &filmes, const std::string &tconst)
-{
-    int high = 0;
-    int low = filmes.size() - 1;
-
-    while (high <= low)
-    {
-        int meio = high + (low - high) / 2;
-
-        // Obtemos o tconst do filme no meio
-        std::string tconstMeio = filmes[meio]->getTconst();
-
-        // Verifica se o tconst no meio é o procurado
-        if (tconstMeio == tconst)
-        {
-            return meio;
-        }
-        // caso tconst procurado for menor buscamos pela metade high
-        else if (tconst < tconstMeio)
-        {
-            low = meio - 1;
-        }
-        // caso tconst procurado for maior se busca pela metade direita
-        else
-        {
-            high = meio + 1;
-        }
-    }
-
-    return -576;
-}
 
 std::vector<Filme *> combinarE(const std::vector<Filme *> &vetor1, const std::vector<Filme *> &vetor2)
 {
@@ -101,9 +57,9 @@ std::vector<Filme *> combinarE(const std::vector<Filme *> &vetor1, const std::ve
 
     return intersecao;
 }
-std::vector<Cinema > combinarECinemas(const std::vector<Cinema > &vetor1, const std::vector<Cinema > &vetor2)
+std::vector<Cinema> combinarECinemas(const std::vector<Cinema> &vetor1, const std::vector<Cinema> &vetor2)
 {
-    std::vector<Cinema > intersecao;
+    std::vector<Cinema> intersecao;
 
     std::set_intersection(
         vetor1.begin(), vetor1.end(),
@@ -125,11 +81,11 @@ std::vector<T *> combinarOu(const std::vector<T *> &v1, const std::vector<T *> &
     return std::vector<T *>(resultadoSet.begin(), resultadoSet.end());
 }
 template <typename T>
-std::vector<T > combinarOuCinema(const std::vector<T > &v1, const std::vector<T > &v2)
+std::vector<T> combinarOuCinema(const std::vector<T> &v1, const std::vector<T> &v2)
 {
-    std::set<T > resultadoSet(v1.begin(), v1.end());
+    std::set<T> resultadoSet(v1.begin(), v1.end());
     resultadoSet.insert(v2.begin(), v2.end());
-    return std::vector<T >(resultadoSet.begin(), resultadoSet.end());
+    return std::vector<T>(resultadoSet.begin(), resultadoSet.end());
 }
 
 // Função para exibir o menu principal
@@ -172,12 +128,6 @@ int main()
     std::cout << "Inicializando programa...\n";
     std::string nomeArquivoFilmes = "filmesCrop.txt";
     std::string nomeArquivoCinema = "cinemas.txt";
-    std::vector<FilmesEmCartaz> filmesemcartaz;
-
-    std::cout << "executada essa parte";
-
-    //  std::cout << filmes.size();
-    std::cout << "Programa inicializado\n";
 
     int continuar = 0;
     std::vector<Filme *> resultados;
@@ -199,10 +149,9 @@ int main()
     cinemaHandler.lerArquivoCinema(nomeArquivoCinema, cinemas);
 
     std::vector<Filme *> resultadosFilmes;
-    std::vector<Cinema > resultadosCinemas;
+    std::vector<Cinema> resultadosCinemas;
     int contadorFilmes = 0;
     int contadorCinemas = 0;
-
 
     while (continuar == 0)
     {
@@ -210,7 +159,7 @@ int main()
         int escolha;
         std::cin >> escolha;
 
-        switch(escolha)
+        switch (escolha)
         {
 
         case 1: // Busca de filmes
@@ -359,16 +308,18 @@ int main()
                 std::cout << "Titulo primario: " << filme->getPrimaryTitle() << "\n";
             }
             contadorFilmes++;
+            break;
         }
+
         case 2: // Busca de cinemas
         {
-            std::cout<<"entrou aquiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii";
+
             int operadorLogico;
             exibirMenuBuscaCinemas();
             int tipoBusca;
             std::cin >> tipoBusca;
 
-            std::vector<Cinema > novosResultadosCinema;
+            std::vector<Cinema> novosResultadosCinema;
 
             if (contadorCinemas >= 1)
             {
@@ -383,242 +334,238 @@ int main()
             }
 
             switch (tipoBusca)
+            {
+            case 1:
+            { /* Código para buscar cinemas por tipo de filme */
+                // // 1. Cinemas que contém filmes de um ou mais tipos (coluna titleType).
+                resultadosCinemas.clear();
+                std::string tipo;
+                std::cout << "Digite o(s) tipo(s) de filme(s): ";
+                std::cin >> tipo;
+
+                // Itera sobre cada cinema
+                int indexCinema;
+                Filme filmeDoCinema;
+                for (auto &cinemaASeAnalisar : cinemas)
+                {
+                    for (const auto &filmeEmCinema : cinemaASeAnalisar.Filmes_Em_Exibicao)
+                    {
+                        indexCinema = sortFilmes.hashTconst(filmeEmCinema);
+                        filmeDoCinema = sortFilmes.buscarFilme(indexCinema);
+
+                        if (filmeDoCinema.getTitleType() == tipo)
                         {
-                        case 1: 
-                        { /* Código para buscar cinemas por tipo de filme */
-                                // // 1. Cinemas que contém filmes de um ou mais tipos (coluna titleType).
-                                resultadosCinemas.clear();
-                                std::string tipo;
-                                std::cout << "Digite o(s) tipo(s) de filme(s): ";
-                                std::cin >> tipo;
+                            // Adiciona o cinema ao vetor de resultados
+                            resultadosCinemas.push_back(cinemaASeAnalisar);
 
-                                // Itera sobre cada cinema
-                                int indexCinema;
-                                Filme filmeDoCinema;
-                                for (auto &cinemaASeAnalisar : cinemas)
-                                {
-                                    for (const auto &filmeEmCinema : cinemaASeAnalisar.Filmes_Em_Exibicao)
-                                    {
-                                        indexCinema = sortFilmes.hashTconst(filmeEmCinema);
-                                        filmeDoCinema = sortFilmes.buscarFilme(indexCinema);
+                            // Imprime o cinema e o filme correspondente
+                            // std::cout << "Cinema: " << cinemaASeAnalisar.Nome_do_Cinema << std::endl;
+                            // std::cout << "Filme: " << filmeEmCinema << std::endl;
 
-                                        if (filmeDoCinema.getTitleType() == tipo)
-                                        {
-                                            // Adiciona o cinema ao vetor de resultados
-                                            resultadosCinemas.push_back(cinemaASeAnalisar);
-
-                                            // Imprime o cinema e o filme correspondente
-                                            // std::cout << "Cinema: " << cinemaASeAnalisar.Nome_do_Cinema << std::endl;
-                                            // std::cout << "Filme: " << filmeEmCinema << std::endl;
-
-                                            // Opcional: interrompe o loop para evitar duplicações de cinema no vetor
-                                            break;
-                                        }
-                                    }
-                                }
-
-                            
-
-                                break;
-                            }
-                        case 2:
-                        { /* Código para buscar cinemas por gênero de filme */
-                           resultadosCinemas.clear();
-
-                                std::string genero;
-                                std::cout << "Digite o genero do filme: ";
-                                std::cin >> genero;
-
-                                // Itera sobre cada cinema
-                                int indexCinema;
-                                Filme filmeDoCinema;
-                                int genreIndex = sortFilmes.getGenreIndex(genero);
-
-                                // Iterando sobre os cinemas
-                                for (const auto &cinemaASeAnalisar : cinemas)
-                                {
-                                    bool cinemaAdicionado = false;
-
-                                    // Iterando sobre os filmes de cada cinema
-                                    for (const auto &filmeEmCinema : cinemaASeAnalisar.Filmes_Em_Exibicao)
-                                    {
-                                        indexCinema = sortFilmes.hashTconst(filmeEmCinema);
-                                        filmeDoCinema = sortFilmes.buscarFilme(indexCinema);
-                                        if (genreIndex != -1 && !filmesPorGenero[genreIndex].empty())
-                                        {
-                                            for (auto &filme : filmesPorGenero[genreIndex])
-                                            {
-                                                if (filmeDoCinema.getTconst() == filme.getTconst())
-                                                {
-                                                    // Adiciona o cinema ao vetor de resultados
-                                                    resultadosCinemas.push_back(cinemaASeAnalisar);
-                                                    cinemaAdicionado = true; // Marca o cinema como adicionado
-
-                                                    break; // Sai do loop que verifica os filmes desse cinema
-                                                }
-                                            }
-                                        }
-                                        if (cinemaAdicionado)
-                                            break; // Sai do loop de filmes do cinema atual
-                                    }
-                                }
-
-                                break;
-                            }
-                        case 3:
-                            { /* Código para buscar cinemas por duração de filme */
-                                     resultadosCinemas.clear();
-                                    int minDuracao, maxDuracao;
-                                    std::cout << "Digite a duração mínima em minutos: ";
-                                    std::cin >> minDuracao;
-                                    std::cout << "Digite a duração máxima em minutos: ";
-                                    std::cin >> maxDuracao;
-
-                                    int indexCinema;
-                                    Filme filmeDoCinema;
-                                    for (const auto &cinemaASeAnalisar : cinemas)
-                                    {
-                                        for (const auto &filmeEmCinema : cinemaASeAnalisar.Filmes_Em_Exibicao)
-                                        {
-                                            indexCinema = sortFilmes.hashTconst(filmeEmCinema);
-                                            filmeDoCinema = sortFilmes.buscarFilme(indexCinema);
-
-                                            if (filmeDoCinema.getRuntimeMinutes() >= minDuracao && filmeDoCinema.getRuntimeMinutes() <= maxDuracao)
-                                            {
-                                                // Adiciona o cinema ao vetor de resultados
-                                                resultadosCinemas.push_back(cinemaASeAnalisar);
-
-                                                // Imprime o cinema e o filme correspondente
-                                                // std::cout << "Cinema: " << cinemaASeAnalisar.Nome_do_Cinema << std::endl;
-                                                // std::cout << "Filme: " << filmeEmCinema << std::endl;
-
-                                                // Opcional: interrompe o loop para evitar duplicações de cinema no vetor
-                                                break;
-                                            }
-                                        }
-                                    }
-                                    
-
-                                    // Agora, buscaResultados contém todos os filmes dentro do intervalo de duração
-                                    break;
-                            }
-                            case 4:
-                            { /* Código para buscar cinemas por localização */
-                                 resultadosCinemas.clear();
-                                    int xReferencia, yReferencia;
-                                    float distanciaMaxima;
-
-                                    std::cout << "Digite a coordenada X do ponto de referência: ";
-                                    std::cin >> xReferencia;
-                                    std::cout << "Digite a coordenada Y do ponto de referência: ";
-                                    std::cin >> yReferencia;
-                                    std::cout << "Digite a distância máxima: ";
-                                    std::cin >> distanciaMaxima;
-
-                                    std::vector<Cinema> cinemasProximos;
-
-                                    for (const auto &cinema : cinemas)
-                                    {
-                                        float distancia = calcularDistancia(cinema.Coordenada_X, cinema.Coordenada_Y, xReferencia, yReferencia);
-
-                                        if (distancia <= distanciaMaxima)
-                                        {
-                                            cinemasProximos.push_back(cinema);
-                                        }
-                                    }
-
-                                    if (cinemasProximos.empty())
-                                    {
-                                        std::cout << "Nenhum cinema encontrado dentro da distância especificada.\n";
-                                    }
-                                    else
-                                    {
-                                        std::cout << "Cinemas encontrados dentro da distância especificada:\n";
-                                        for (const auto &cinema : cinemasProximos)
-                                        {
-                                                resultadosCinemas.push_back(cinema);
-                                        }
-                                    }
-
-                                    break;
-                            }
-                            case 5:
-                            {
-                                resultadosCinemas.clear();
-                                float maxPreco;
-                                std::cout << "Digite o preco maximo: ";
-                                std::cin >> maxPreco;
-
-                                int indexCinema;
-                                Filme filmeDoCinema;
-                                for (const auto &cinemaASeAnalisar : cinemas)
-                                {
-                                    if (cinemaASeAnalisar.Preco_Ingresso <= maxPreco)
-                                    {
-                                        // Adiciona o cinema ao vetor de resultados
-                                        resultadosCinemas.push_back(cinemaASeAnalisar);
-                                        // std::cout<<cinemaASeAnalisar.Nome_do_Cinema;
-                                    }
-                                }
-
-                          
-                                // Agora, buscaResultados contém todos os filmes dentro do intervalo de duração
-                                break;
-                            }
-                            case 6 :
-                            {
-                                 resultadosCinemas.clear();
-                                int anoInicio;
-                                int anoFim;
-                                std::cout << "Digite o ano de início: ";
-                                std::cin >> anoInicio;
-                                std::cout << "Digite o ano de fim: ";
-                                std::cin >> anoFim;
-                                // Itera sobre cada cinema
-                                int indexCinema;
-                                Filme filmeDoCinema;
-
-                                // iterando sob os cinemas
-                                for (const auto &cinemaASeAnalisar : cinemas)
-                                {
-                                    // iterando sob os filmes dos cinemas
-                                    for (const auto &filmeEmCinema : cinemaASeAnalisar.Filmes_Em_Exibicao)
-                                    {
-                                        indexCinema = sortFilmes.hashTconst(filmeEmCinema);
-                                        filmeDoCinema = sortFilmes.buscarFilme(indexCinema);
-                                        // Verifica se o filme tem um startYear e endYear válidos
-                                        bool temStartYearValido = filmeDoCinema.getStartYear() != -11 && filmeDoCinema.getStartYear() != 0 && filmeDoCinema.getEndYear() != 0 && filmeDoCinema.getEndYear() != -11;
-                                        // Verifica se o filme está completamente dentro do intervalo de anos
-                                        bool dentroDoIntervalo = (temStartYearValido && filmeDoCinema.getStartYear() >= anoInicio && filmeDoCinema.getEndYear() <= anoFim);
-
-                                        // Inclui o filme se estiver completamente dentro do intervalo
-                                        if (dentroDoIntervalo)
-                                        {
-                                            resultadosCinemas.push_back(cinemaASeAnalisar);
-                                            // Imprime o cinema e o filme correspondente
-                                            // std::cout << "Cinema: " << cinemaASeAnalisar.Nome_do_Cinema << std::endl;
-                                            // std::cout << "Filme: " << filmeEmCinema << std::endl;
-                                        }
-                                    }
-                                }
-
-                                // Exibir todos os cinemas encontrados
-                                std::cout << "Cinemas encontrados:" << std::endl;
-                                for (const auto &resultadoCinema : resultadosCinemas)
-                                {
-                                    std::cout << "nome do cinema: " << resultadoCinema.Nome_do_Cinema << std::endl;
-                                }
-                                /* code */
-                                break;
-                            }
-                            default:
-                            std::cout << "Opção inválida\n";
-                            continue;
+                            // Opcional: interrompe o loop para evitar duplicações de cinema no vetor
+                            break;
                         }
+                    }
+                }
+
+                break;
+            }
+            case 2:
+            { /* Código para buscar cinemas por gênero de filme */
+                resultadosCinemas.clear();
+
+                std::string genero;
+                std::cout << "Digite o genero do filme: ";
+                std::cin >> genero;
+
+                // Itera sobre cada cinema
+                int indexCinema;
+                Filme filmeDoCinema;
+                int genreIndex = sortFilmes.getGenreIndex(genero);
+
+                // Iterando sobre os cinemas
+                for (const auto &cinemaASeAnalisar : cinemas)
+                {
+                    bool cinemaAdicionado = false;
+
+                    // Iterando sobre os filmes de cada cinema
+                    for (const auto &filmeEmCinema : cinemaASeAnalisar.Filmes_Em_Exibicao)
+                    {
+                        indexCinema = sortFilmes.hashTconst(filmeEmCinema);
+                        filmeDoCinema = sortFilmes.buscarFilme(indexCinema);
+                        if (genreIndex != -1 && !filmesPorGenero[genreIndex].empty())
+                        {
+                            for (auto &filme : filmesPorGenero[genreIndex])
+                            {
+                                if (filmeDoCinema.getTconst() == filme.getTconst())
+                                {
+                                    // Adiciona o cinema ao vetor de resultados
+                                    resultadosCinemas.push_back(cinemaASeAnalisar);
+                                    cinemaAdicionado = true; // Marca o cinema como adicionado
+
+                                    break; // Sai do loop que verifica os filmes desse cinema
+                                }
+                            }
+                        }
+                        if (cinemaAdicionado)
+                            break; // Sai do loop de filmes do cinema atual
+                    }
+                }
+
+                break;
+            }
+            case 3:
+            { /* Código para buscar cinemas por duração de filme */
+                resultadosCinemas.clear();
+                int minDuracao, maxDuracao;
+                std::cout << "Digite a duração mínima em minutos: ";
+                std::cin >> minDuracao;
+                std::cout << "Digite a duração máxima em minutos: ";
+                std::cin >> maxDuracao;
+
+                int indexCinema;
+                Filme filmeDoCinema;
+                for (const auto &cinemaASeAnalisar : cinemas)
+                {
+                    for (const auto &filmeEmCinema : cinemaASeAnalisar.Filmes_Em_Exibicao)
+                    {
+                        indexCinema = sortFilmes.hashTconst(filmeEmCinema);
+                        filmeDoCinema = sortFilmes.buscarFilme(indexCinema);
+
+                        if (filmeDoCinema.getRuntimeMinutes() >= minDuracao && filmeDoCinema.getRuntimeMinutes() <= maxDuracao)
+                        {
+                            // Adiciona o cinema ao vetor de resultados
+                            resultadosCinemas.push_back(cinemaASeAnalisar);
+
+                            // Imprime o cinema e o filme correspondente
+                            // std::cout << "Cinema: " << cinemaASeAnalisar.Nome_do_Cinema << std::endl;
+                            // std::cout << "Filme: " << filmeEmCinema << std::endl;
+
+                            // Opcional: interrompe o loop para evitar duplicações de cinema no vetor
+                            break;
+                        }
+                    }
+                }
+
+                // Agora, buscaResultados contém todos os filmes dentro do intervalo de duração
+                break;
+            }
+            case 4:
+            { /* Código para buscar cinemas por localização */
+                resultadosCinemas.clear();
+                int xReferencia, yReferencia;
+                float distanciaMaxima;
+
+                std::cout << "Digite a coordenada X do ponto de referência: ";
+                std::cin >> xReferencia;
+                std::cout << "Digite a coordenada Y do ponto de referência: ";
+                std::cin >> yReferencia;
+                std::cout << "Digite a distância máxima: ";
+                std::cin >> distanciaMaxima;
+
+                std::vector<Cinema> cinemasProximos;
+
+                for (const auto &cinema : cinemas)
+                {
+                    float distancia = calcularDistancia(cinema.Coordenada_X, cinema.Coordenada_Y, xReferencia, yReferencia);
+
+                    if (distancia <= distanciaMaxima)
+                    {
+                        cinemasProximos.push_back(cinema);
+                    }
+                }
+
+                if (cinemasProximos.empty())
+                {
+                    std::cout << "Nenhum cinema encontrado dentro da distância especificada.\n";
+                }
+                else
+                {
+                    std::cout << "Cinemas encontrados dentro da distância especificada:\n";
+                    for (const auto &cinema : cinemasProximos)
+                    {
+                        resultadosCinemas.push_back(cinema);
+                    }
+                }
+
+                break;
+            }
+            case 5:
+            {
+                resultadosCinemas.clear();
+                float maxPreco;
+                std::cout << "Digite o preco maximo: ";
+                std::cin >> maxPreco;
+
+                // int indexCinema;
+                Filme filmeDoCinema;
+                for (const auto &cinemaASeAnalisar : cinemas)
+                {
+                    if (cinemaASeAnalisar.Preco_Ingresso <= maxPreco)
+                    {
+                        // Adiciona o cinema ao vetor de resultados
+                        resultadosCinemas.push_back(cinemaASeAnalisar);
+                        // std::cout<<cinemaASeAnalisar.Nome_do_Cinema;
+                    }
+                }
+
+                // Agora, buscaResultados contém todos os filmes dentro do intervalo de duração
+                break;
+            }
+            case 6:
+            {
+                resultadosCinemas.clear();
+                int anoInicio;
+                int anoFim;
+                std::cout << "Digite o ano de início: ";
+                std::cin >> anoInicio;
+                std::cout << "Digite o ano de fim: ";
+                std::cin >> anoFim;
+                // Itera sobre cada cinema
+                int indexCinema;
+                Filme filmeDoCinema;
+
+                // iterando sob os cinemas
+                for (const auto &cinemaASeAnalisar : cinemas)
+                {
+                    // iterando sob os filmes dos cinemas
+                    for (const auto &filmeEmCinema : cinemaASeAnalisar.Filmes_Em_Exibicao)
+                    {
+                        indexCinema = sortFilmes.hashTconst(filmeEmCinema);
+                        filmeDoCinema = sortFilmes.buscarFilme(indexCinema);
+                        // Verifica se o filme tem um startYear e endYear válidos
+                        bool temStartYearValido = filmeDoCinema.getStartYear() != -11 && filmeDoCinema.getStartYear() != 0 && filmeDoCinema.getEndYear() != 0 && filmeDoCinema.getEndYear() != -11;
+                        // Verifica se o filme está completamente dentro do intervalo de anos
+                        bool dentroDoIntervalo = (temStartYearValido && filmeDoCinema.getStartYear() >= anoInicio && filmeDoCinema.getEndYear() <= anoFim);
+
+                        // Inclui o filme se estiver completamente dentro do intervalo
+                        if (dentroDoIntervalo)
+                        {
+                            resultadosCinemas.push_back(cinemaASeAnalisar);
+                            // Imprime o cinema e o filme correspondente
+                            // std::cout << "Cinema: " << cinemaASeAnalisar.Nome_do_Cinema << std::endl;
+                            // std::cout << "Filme: " << filmeEmCinema << std::endl;
+                        }
+                    }
+                }
+
+                // Exibir todos os cinemas encontrados
+                std::cout << "Cinemas encontrados:" << std::endl;
+                for (const auto &resultadoCinema : resultadosCinemas)
+                {
+                    std::cout << "nome do cinema: " << resultadoCinema.Nome_do_Cinema << std::endl;
+                }
+                /* code */
+                break;
+            }
+            default:
+                std::cout << "Opção inválida\n";
+                continue;
+            }
             if (contadorCinemas >= 1)
             {
 
-                std::vector<Cinema > aux;
+                std::vector<Cinema> aux;
                 aux.clear();
 
                 if (operadorLogico == 0)
@@ -637,101 +584,21 @@ int main()
                     resultadosCinemas = aux;
                 }
             }
-              // Exibe resultados finais
+            // Exibe resultados finais
             for (auto cinema : resultadosCinemas)
             {
-                std::cout << "ID: " << cinema.Cinema_ID<< "\n";
+                std::cout << "ID: " << cinema.Cinema_ID << "\n";
                 std::cout << "Nome do Cinema: " << cinema.Nome_do_Cinema << "\n";
             }
             contadorCinemas++;
-
-            }
-
-        std::cout << "Deseja continuar? (Sim - 0 / Não - 1): ";
-        std::cin >> continuar;
-
-
+            break;
         }
-
-
         }
+            std::cout << "Deseja continuar? (Sim - 0 / Não - 1): ";
+            std::cin >> continuar;
+    }
 
     std::cout << "Programa encerrado.\n";
 
     return 0;
 }
-
-// // Função para buscar cinemas por tipos de filmes
-// std::vector<Filme> buscarCinemasPorTitleType(ManipularCinema& manipular, SortFilmes& sort, std::string tipo, std::vector<FilmesEmCartaz>& filmesParaPesquisa) {
-//     std::vector<Filme> cinemasComTipos;
-
-//     // Busca os filmes pelo tipo
-//     std::vector<Filme*> filmesEncontrados = sort.buscaBinariaMultiplosResultados(sort.titleTypeArrayPtr, tipo, &Filme::getTitleType);
-
-//         // Criar um conjunto de filmes encontrados (desreferenciando os ponteiros)
-//             std::set<FilmesEmCartaz> setFilmesEncontrados;
-//             for (const auto& filmePtr : filmesEncontrados) {
-//                 if (filmePtr != nullptr) {
-//                     setFilmesEncontrados.insert(*filmePtr);
-//                 }
-//             }
-//        // std::set<Filme> setFilmesParaPesquisa(filmesParaPesquisa.begin(), filmesParaPesquisa.end());
-
-//                 // // Calcula a interseção
-//                 // std::set_intersection(setFilmesEncontrados.begin(), setFilmesEncontrados.end(),
-//                 //                     setFilmesParaPesquisa.begin(), setFilmesParaPesquisa.end(),
-//                 //                     std::back_inserter(cinemasComTipos));
-
-//     //        std:: string aux1, aux2;
-//     //  for(int a=0,b=0; a < cinemasComTipos.size() && b < filmesParaPesquisa.size();){
-//     //     aux1 = filmesParaPesquisa[b].filmedocinema.tconst;
-//     //     aux2 = cinemasComTipos[a].tconst;
-//     //     removeCharacter(aux1,'t');
-//     //     removeCharacter(aux2,'t');
-//     //     if(stoi(aux1) == stoi(aux2)){ //Gambiarra pra consertar bug
-//     //         filmesParaPesquisa[b].filmedocinema = cinemasComTipos[a];
-//     //         cinemasComTipos.push_back(filmesParaPesquisa[b].filmedocinema);
-//     //         a++;
-//     //         b++;
-//     //     }else
-//     //     if(stoi(aux1) > stoi(aux2)){
-//     //         a++;
-//     //     }else{
-//     //         b++;
-//     //     }
-//     // }
-
-//     // Verifica os filmes encontrados e relaciona com os cinemas
-//     //         int contador1=0;
-//     //         int contador2=0;
-
-//     //         std::cout<<filmesParaPesquisa.size()<< std::endl;
-//     //         std::cout<<filmesEncontrados.size()<< std::endl;
-
-//     // for(int i=0, j=0; i < filmesEncontrados.size() && j < filmesParaPesquisa.size() ; ){
-//     //         std::cout<<filmesEncontrados[i]->getTconst()<< std::endl;
-//     //         std::cout<<filmesParaPesquisa[i].filmedocinema.tconst<< std::endl;
-//     //         std::cout<<i<< std::endl;
-//     //         std::cout<<j<< std::endl;
-
-//     //     if(filmesEncontrados[i]->getTconst() == filmesParaPesquisa[j].filmedocinema.tconst){
-
-//     //         cinemasComTipos.push_back(filmesParaPesquisa[i].filmedocinema.tconst);
-//     //         i++;
-//     //         j++;
-//     //     }else if(filmesEncontrados[i]->getTconst() < filmesParaPesquisa[j].filmedocinema.tconst){
-//     //         i++;
-//     //     }else{
-//     //         j++;
-//     //     }
-//     // }
-
-//     // // Remover duplicatas, se necessário
-//     // std::sort(cinemasComTipos.begin(), cinemasComTipos.end());
-//     // cinemasComTipos.erase(std::unique(cinemasComTipos.begin(), cinemasComTipos.end()), cinemasComTipos.end());
-
-//     // Debugging: Imprimir a quantidade final de cinemas encontrados
-//     std::cout << "Total de cinemas encontrados: " << cinemasComTipos.size() << "\n";
-
-//     return cinemasComTipos;
-// }
