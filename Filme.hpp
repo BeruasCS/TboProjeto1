@@ -24,6 +24,11 @@ public:
     std::vector<std::string> genres;
     std::vector<std::string> vetor_idcinemas;
 
+        // Sobrecarga do operador < para uso no std::set
+    bool operator<(const Filme& other) const {
+        return tconst < other.tconst;
+    }
+
     Filme()
         : tconst(""), titleType(""), primaryTitle(""), originalTitle(""), isAdult(false),
           startYear(-1), endYear(-1), runtimeMinutes(-1), genres(), vetor_idcinemas() {}
