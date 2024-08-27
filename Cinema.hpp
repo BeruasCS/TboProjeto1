@@ -11,7 +11,7 @@
 #include <cctype>
 #include <locale>
 #include "Filme.hpp"
-#include "SortFilmes.hpp"
+#include "ColetaniaDeFilmes.hpp"
 #include <cmath>
 
 

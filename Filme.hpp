@@ -9,7 +9,7 @@
 #include <stdexcept>
 #define NULL __null
 
-// Classe Filme permanece inalterada
+
 class Filme
 {
 public:

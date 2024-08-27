@@ -4,7 +4,7 @@
 #include <vector>
 #include <set>
 #include "Filme.hpp"
-#include "SortFilmes.hpp"
+#include "ColetaniaDeFilmes.hpp"
 #include "Cinema.hpp"
 
 // Funções de comparação
@@ -136,13 +136,13 @@ int main()
     std::vector<std::vector<Filme>> filmesPorGenero;
 
     std::vector<Filme> filmes;
-    SortFilmes sortFilmes(filmes);
-    sortFilmes.lerArquivoFilmes(nomeArquivoFilmes, filmesPorGenero);
-    sortFilmes.atualizar(); // Carrega e ordena os filmes
-    sortFilmes.merge_sort(sortFilmes.titleTypeArrayPtr, compareByTitleType);
-    sortFilmes.merge_sort(sortFilmes.runtimeMinutesArrayPtr, compareByRuntimeMinutes);
-    sortFilmes.merge_sort(sortFilmes.startYearArrayPtr, compareByStartYear);
-    sortFilmes.merge_sort(sortFilmes.genresArrayPtr, compareByGenres);
+    ColetaniaDeFilmes Coletanea(filmes);
+    Coletanea.lerArquivoFilmes(nomeArquivoFilmes, filmesPorGenero);
+    Coletanea.atualizar(); // Carrega e ordena os filmes
+    Coletanea.merge_sort(Coletanea.titleTypeArrayPtr, compareByTitleType);
+    Coletanea.merge_sort(Coletanea.runtimeMinutesArrayPtr, compareByRuntimeMinutes);
+    Coletanea.merge_sort(Coletanea.startYearArrayPtr, compareByStartYear);
+    Coletanea.merge_sort(Coletanea.genresArrayPtr, compareByGenres);
 
     std::vector<Cinema> cinemas;
     Cinema cinemaHandler;
@@ -191,8 +191,8 @@ int main()
                 std::string tipo;
                 std::cout << "Digite o(s) tipo(s) de filme(s): ";
                 std::cin >> tipo;
-                resultadosFilmes = sortFilmes.buscaLinearMultiplosResultados(
-                    sortFilmes.titleTypeArrayPtr, tipo, &Filme::getTitleType);
+                resultadosFilmes = Coletanea.buscaLinearMultiplosResultados(
+                    Coletanea.titleTypeArrayPtr, tipo, &Filme::getTitleType);
                 resultadosFilmes.size();
                 for (const auto x : resultadosFilmes)
                 {
@@ -208,7 +208,7 @@ int main()
                 std::cout << "Digite o gênero de filme: ";
                 std::cin >> genero;
 
-                int genreIndex = sortFilmes.getGenreIndex(genero);
+                int genreIndex = Coletanea.getGenreIndex(genero);
                 if (genreIndex != -1 && !filmesPorGenero[genreIndex].empty())
                 {
                     for (auto &filme : filmesPorGenero[genreIndex])
@@ -232,7 +232,7 @@ int main()
                 std::cout << "Digite a duração máxima em minutos: ";
                 std::cin >> maxDuracao;
 
-                std::vector<Filme *> Duracao = sortFilmes.runtimeMinutesArrayPtr;
+                std::vector<Filme *> Duracao = Coletanea.runtimeMinutesArrayPtr;
 
                 // Percorrer o vetor Duracao
                 for (auto &film : Duracao)
@@ -250,7 +250,7 @@ int main()
             case 4:
             {
                 resultadosFilmes.clear();
-                std::vector<Filme *> startYearArrayPtr = sortFilmes.startYearArrayPtr;
+                std::vector<Filme *> startYearArrayPtr = Coletanea.startYearArrayPtr;
                 int anoInicio;
                 std::cout << "Digite o ano de início: ";
                 std::cin >> anoInicio;
@@ -350,8 +350,8 @@ int main()
                 {
                     for (const auto &filmeEmCinema : cinemaASeAnalisar.Filmes_Em_Exibicao)
                     {
-                        indexCinema = sortFilmes.hashTconst(filmeEmCinema);
-                        filmeDoCinema = sortFilmes.buscarFilme(indexCinema);
+                        indexCinema = Coletanea.hashTconst(filmeEmCinema);
+                        filmeDoCinema = Coletanea.buscarFilme(indexCinema);
 
                         if (filmeDoCinema.getTitleType() == tipo)
                         {
@@ -381,7 +381,7 @@ int main()
                 // Itera sobre cada cinema
                 int indexCinema;
                 Filme filmeDoCinema;
-                int genreIndex = sortFilmes.getGenreIndex(genero);
+                int genreIndex = Coletanea.getGenreIndex(genero);
 
                 // Iterando sobre os cinemas
                 for (const auto &cinemaASeAnalisar : cinemas)
@@ -391,8 +391,8 @@ int main()
                     // Iterando sobre os filmes de cada cinema
                     for (const auto &filmeEmCinema : cinemaASeAnalisar.Filmes_Em_Exibicao)
                     {
-                        indexCinema = sortFilmes.hashTconst(filmeEmCinema);
-                        filmeDoCinema = sortFilmes.buscarFilme(indexCinema);
+                        indexCinema = Coletanea.hashTconst(filmeEmCinema);
+                        filmeDoCinema = Coletanea.buscarFilme(indexCinema);
                         if (genreIndex != -1 && !filmesPorGenero[genreIndex].empty())
                         {
                             for (auto &filme : filmesPorGenero[genreIndex])
@@ -429,8 +429,8 @@ int main()
                 {
                     for (const auto &filmeEmCinema : cinemaASeAnalisar.Filmes_Em_Exibicao)
                     {
-                        indexCinema = sortFilmes.hashTconst(filmeEmCinema);
-                        filmeDoCinema = sortFilmes.buscarFilme(indexCinema);
+                        indexCinema = Coletanea.hashTconst(filmeEmCinema);
+                        filmeDoCinema = Coletanea.buscarFilme(indexCinema);
 
                         if (filmeDoCinema.getRuntimeMinutes() >= minDuracao && filmeDoCinema.getRuntimeMinutes() <= maxDuracao)
                         {
@@ -531,8 +531,8 @@ int main()
                     // iterando sob os filmes dos cinemas
                     for (const auto &filmeEmCinema : cinemaASeAnalisar.Filmes_Em_Exibicao)
                     {
-                        indexCinema = sortFilmes.hashTconst(filmeEmCinema);
-                        filmeDoCinema = sortFilmes.buscarFilme(indexCinema);
+                        indexCinema = Coletanea.hashTconst(filmeEmCinema);
+                        filmeDoCinema = Coletanea.buscarFilme(indexCinema);
                         // Verifica se o filme tem um startYear e endYear válidos
                         bool temStartYearValido = filmeDoCinema.getStartYear() != -11 && filmeDoCinema.getStartYear() != 0 && filmeDoCinema.getEndYear() != 0 && filmeDoCinema.getEndYear() != -11;
                         // Verifica se o filme está completamente dentro do intervalo de anos
