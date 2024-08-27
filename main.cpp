@@ -87,23 +87,21 @@ int binarySearchTconst(const std::vector<Filme *> &filmes, const std::string &tc
 }
 
 
+std::vector<Filme *> combinarE(const std::vector<Filme *> &vetor1, const std::vector<Filme *> &vetor2)
+{
+    std::vector<Filme *> intersecao;
 
-std::vector<Filme*> combinarE(const std::vector<Filme*>& vetor1, const std::vector<Filme*>& vetor2) {
-    // Cria sets a partir dos vetores para realizar a interseção
-    std::set<Filme*> set1(vetor1.begin(), vetor1.end());
-    std::set<Filme*> set2(vetor2.begin(), vetor2.end());
-
-    // Vetor para armazenar a interseção
-    std::vector<Filme*> intersecao;
-
-    // Realiza a interseção
-    std::set_intersection(set1.begin(), set1.end(), set2.begin(), set2.end(),
-                          std::back_inserter(intersecao));
+    std::set_intersection(
+        vetor1.begin(), vetor1.end(),
+        vetor2.begin(), vetor2.end(),
+        std::back_inserter(intersecao),
+        [](Filme *a, Filme *b)
+        {
+            return a->getTconst() < b->getTconst(); // Comparando por Tconst
+        });
 
     return intersecao;
 }
-
-
 // Função de combinação "OU"
 template <typename T>
 std::vector<T *> combinarOu(const std::vector<T *> &v1, const std::vector<T *> &v2)
@@ -209,9 +207,23 @@ int main()
                 if(contadorFilmes>=1){
 
 
+
+std::cout<<"entrou nesse if"<<"\n";
+                    for (auto filme : resultadosFilmes)
+            {
+                std::cout << "ID: " << filme->getTconst() << "\n";
+                std::cout << "Titulo primario: " << filme->getPrimaryTitle() << "\n";
+            }
                   
 
                     novosResultados= resultadosFilmes;
+
+
+                    for (auto filme : novosResultados)
+            {
+                std::cout << "ID: " << filme->getTconst() << "\n";
+                std::cout << "Titulo primario: " << filme->getPrimaryTitle() << "\n";
+            }
 
                     exibirMenuLogica();
 
@@ -223,6 +235,7 @@ int main()
             {
             case 1:
             {
+                resultadosFilmes.clear();
                 std::string tipo;
                 std::cout << "Digite o(s) tipo(s) de filme(s): ";
                 std::cin >> tipo;
@@ -238,6 +251,7 @@ int main()
             }
             case 2:
             { // Busca por gênero de filme
+             resultadosFilmes.clear();
                 std::string genero;
                 std::cout << "Digite o gênero de filme: ";
                 std::cin >> genero;
@@ -259,6 +273,7 @@ int main()
             }
             case 3:
             {
+                 resultadosFilmes.clear();
                 int minDuracao, maxDuracao;
                 std::cout << "Digite a duração mínima em minutos: ";
                 std::cin >> minDuracao;
@@ -282,6 +297,7 @@ int main()
             }
             case 4:
             {
+                 resultadosFilmes.clear();
                 std::vector<Filme *> startYearArrayPtr = sortFilmes.startYearArrayPtr;
                 int anoInicio;
                 std::cout << "Digite o ano de início: ";
@@ -322,6 +338,7 @@ int main()
 
                         aux =combinarE(novosResultados, resultadosFilmes);
                         resultadosFilmes=aux;
+
                     }
                     if(operadorLogico==1){
 
@@ -331,16 +348,22 @@ int main()
                     }
 
 
+
                 }
           
-            // Exibe resultados finais
+            // // Exibe resultados finais
+            // for (auto filme : resultadosFilmes)
+            // {
+            //     std::cout << "ID: " << filme->getTconst() << "\n";
+            //     std::cout << "Titulo primario: " << filme->getPrimaryTitle() << "\n";
+            // }
+
+                           // Exibe resultados finais
             for (auto filme : resultadosFilmes)
             {
                 std::cout << "ID: " << filme->getTconst() << "\n";
                 std::cout << "Titulo primario: " << filme->getPrimaryTitle() << "\n";
             }
-
-
                 contadorFilmes++;
         }
         else if (escolha == 1) // Busca de cinemas

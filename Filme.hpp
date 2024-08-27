@@ -24,6 +24,11 @@ public:
     std::vector<std::string> genres;
     std::vector<std::string> vetor_idcinemas;
 
+        // Sobrecarga do operador de igualdade
+    bool operator==(const Filme& outro) const {
+        return tconst == outro.tconst; // Compara usando o tconst, que é único para cada filme
+    }
+
         // Sobrecarga do operador < para uso no std::set
     bool operator<(const Filme& other) const {
         return tconst < other.tconst;
